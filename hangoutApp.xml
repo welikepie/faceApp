@@ -45,13 +45,26 @@
 			<p>We Like Pie.</p> -->
 		</header>
 		<div id="content" style="float:left;">
-		<div id="overlays">
+		
+			<!--four textures, six face types -->
+		<div id="faceTypes">
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="faceType1" value="1">1</button>
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="faceType2" value="2">2</button>
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="faceType3" value="3">3</button>
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="faceType4" value="4">4</button>
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="faceType5" value="5">5</button>
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="faceType6" value="6">6</button>
+		</div>
+		<div id="textures">
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="silver" value="silver">silver</button>
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="badFX" value="badFX">badFX</button>
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="gold" value="gold">gold</button>
+			<button type="button" style="width:50px; height:20px;" class="btn btn-inverse" id="polka" value="polka">polka</button>
+		</div>
+		<div id="overlays">	
 			<button type="button" class="btn btn-inverse" id="turf"><img src="https://raw.github.com/amroche/faceApp/master/images/overlays/turfThumb.png" alt="Grassy Hair"></button>
-		
 			<button type="button" class="btn btn-inverse" id="fx"><img src="https://raw.github.com/amroche/faceApp/master/images/overlays/fxThumb.png" alt="Your graphics card died."></button>
-		
 			<button type="button" class="btn btn-inverse" id="gold"><img src="https://raw.github.com/amroche/faceApp/master/images/overlays/goldThumb.png" alt="Golden Hair"></button>
-		
 			<button type="button" class="btn btn-inverse" id="polka"><img src="https://raw.github.com/amroche/faceApp/master/images/overlays/polkaThumb.png" alt="Polka Hair"></button>
 		
 		</div>

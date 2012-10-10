@@ -4,7 +4,24 @@
 ( function() {"use strict";
 		var whatWeBeUsing = "";
 		var displaying = false;
-		var base_url = $('head > base').prop('href') || '', overlays = {
+		var facetexture = "silver";
+		var facetype = "faceType1";
+		var base_url = $('head > base').prop('href') || '';
+		var faceSkins = {
+			'faceType1silver':{
+				'url' : base_url + 'images/overlays/faceTextures/faceType1silver.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0,
+					'y' : 0
+				},
+				'scale' : 0.95,
+				'rotation' : 0,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			}	
+		};
+		var overlays = {
 			'turf' : {
 				'url' : base_url + 'images/overlays/turf.png',
 				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
@@ -57,11 +74,11 @@
 				'url' : base_url + 'images/overlays/fxLeft.png',
 				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
 				'offset' : {
-					'x' : 0.3,
-					'y' : -0.15
+					'x' : 0.33,
+					'y' : -0.53
 				},
-				'scale' : 0.81,
-				'rotation' : -0.21,
+				'scale' : 0.79,
+				'rotation' : -0.20,
 				'scaleWithFace' : true,
 				'rotateWithFace' : true
 			},
@@ -69,11 +86,11 @@
 				'url' : base_url + 'images/overlays/fxRight.png',
 				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
 				'offset' : {
-					'x' : -0.3,
-					'y' : -0.15
+					'x' : -0.33,
+					'y' : -0.53
 				},
-				'scale' : 0.81,
-				'rotation' : 0.21,
+				'scale' : 0.79,
+				'rotation' : 0.20,
 				'scaleWithFace' : true,
 				'rotateWithFace' : true
 			},
@@ -132,7 +149,7 @@
 					'x' : 0.31,
 					'y' : -0.36
 				},
-				'scale' : 0.79,
+				'scale' : 0.68,
 				'rotation' : -0.40,
 				'scaleWithFace' : true,
 				'rotateWithFace' : true
@@ -144,60 +161,12 @@
 					'x' : -0.31,
 					'y' : -0.36
 				},
-				'scale' : 0.79,
+				'scale' : 0.68,
 				'rotation' : 0.40,
 				'scaleWithFace' : true,
 				'rotateWithFace' : true
-			},
-			'antlers' : {
-				'url' : base_url + 'images/overlays/antlers.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0,
-					'y' : -1
-				},
-				'scale' : 0.95,
-				'rotation' : 0,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'fox' : {
-				'url' : base_url + 'images/overlays/fox.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : -0.15,
-					'y' : -0.55
-				},
-				'scale' : 1.3,
-				'rotation' : 0,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'moose' : {
-				'url' : base_url + 'images/overlays/moose.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0,
-					'y' : -0.4
-				},
-				'scale' : 1.7,
-				'rotation' : 0,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'rabbit' : {
-				'url' : base_url + 'images/overlays/rabbit.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0.05,
-					'y' : -0.85
-				},
-				'scale' : 0.95,
-				'rotation' : (-5 * Math.PI / 180),
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
 			}
-		}, internals = {}, selected = null, load_position_values, apply_position_values, toggle_display, showDefaultFeed;
+		}, internals = {}, internalTexture = {}, selected = null,genommen = null load_position_values, apply_position_values, toggle_display, showDefaultFeed;
 
 		function displayPan(faceTrack) {
 			try {
@@ -225,11 +194,55 @@
 			}
 		}
 
+		toggle_texture = function(){
+			var typ = facetype + facetexture;
+			var gegenstand;
+			if(!(typ in faceSkins)){
+				throw new Error('`' + typ + '` is not a valid overlay type.');
+			}
+			
+			
+			// If first call to toggle, assume the image has not been loaded
+			if (!( typ in internalTexture)) {
+
+				internalTexture[typ] = {
+					'resource' : gapi.hangout.av.effects.createImageResource(faceSkins[typ].url),
+					'overlay' : null
+				};
+
+				internalTexture[typ].overlay = internalTexture[typ].resource.createFaceTrackingOverlay({
+					'scale' : faceSkins[typ].scale,
+					'rotation' : faceSkins[typ].rotation,
+					'offset' : faceSkins[typ].offset,
+					'scaleWithFace' : faceSkins[typ].scaleWithFace,
+					'rotateWithFace' : faceSkins[typ].rotateWithFace,
+					'trackingFeature' : faceSkins[typ].trackingFeature
+				});
+				genommen = typ; // mach 'nen neuen variable fuer selected.
+
+				for (gegenstand in internalTexture) {
+					if (internalTexture.hasOwnProperty(gegenstand)) {
+						internalTexture[gegenstand].overlay.setVisible(gegenstand === typ);
+					}
+				}
+				load_position_values_textures(); //re-write for faceSkins
+			} else {
+				genommen = typ;
+				for (gegenstand in internalTexture) {
+					if (internalTexture.hasOwnProperty(gegenstand)) {
+						internalTexture[gegenstand].overlay.setVisible(gegenstand === typ);
+					}
+				}
+				load_position_values_textures(); //re-write this for faceSkins
+			}			
+		}
+		
+		
 		toggle_display = function(type) {
 			displaying = true;
 			var item;
 			//console.log(displaying);
-			// Validate existence of overlay type
+			//Validate existence of overlay type
 
 			if (!( type in overlays)) {
 				throw new Error('`' + type + '` is not a valid overlay type.');
@@ -294,6 +307,28 @@
 			}
 
 		};
+		
+		load_position_values_textures = function() {
+			var temp2, form2, overlay2;
+			if (genommen) {
+				form2 = $('#position');
+				overlay2 = internalTexture[genommen].overlay;
+
+				temp2 = Math.round(overlay2.getScale() * 100) / 100;
+				form2.find('[data-name="scale"]').slider('value', temp2);
+
+				temp2 = Math.round(overlay2.getRotation() * 180 / Math.PI);
+				form2.find('[data-name="rotation"]').slider('value', temp2);
+
+				temp2 = Math.round(overlay2.getOffset().x * 100) / 100;
+				form2.find('[data-name="offset_x"]').slider('value', temp2);
+
+				temp2 = Math.round(overlay2.getOffset().y * 100) / 100;
+				form2.find('[data-name="offset_y"]').slider('value', temp2);
+
+			}
+
+		};
 
 		apply_position_values = function() {
 			var temp, form, overlay;
@@ -344,6 +379,14 @@
 		}
 
 		//
+		$('#faceTypes button').on('click',function(){
+			facetype = this.id;
+			toggle_texture();
+		});
+		$('#textures button').on('click',function(){
+			facetexture = this.id;
+			toggle_texture();
+		});
 		$('#overlays button').on('click', function() {
 			toggle_display(this.id);
 			whatWeBeUsing = this.id;
