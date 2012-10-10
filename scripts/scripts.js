@@ -10,7 +10,7 @@
 				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
 				'offset' : {
 					'x' : 0,
-					'y' : -1
+					'y' : 0
 				},
 				'scale' : 0.95,
 				'rotation' : 0,
@@ -21,11 +21,11 @@
 				'url' : base_url + 'images/overlays/turfLeft.png',
 				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
 				'offset' : {
-					'x' : 0,
-					'y' : -1
+					'x' : 0.3,
+					'y' : -0.15
 				},
-				'scale' : 0.95,
-				'rotation' : 0,
+				'scale' : 0.81,
+				'rotation' : -0.21,
 				'scaleWithFace' : true,
 				'rotateWithFace' : true
 			},
@@ -33,15 +33,122 @@
 				'url' : base_url + 'images/overlays/turfRight.png',
 				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
 				'offset' : {
+					'x' : -0.3,
+					'y' : -0.15
+				},
+				'scale' : 0.81,
+				'rotation' : 0.21,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'fx' : {
+				'url' : base_url + 'images/overlays/fx.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
 					'x' : 0,
-					'y' : -1
+					'y' : 0
 				},
 				'scale' : 0.95,
 				'rotation' : 0,
 				'scaleWithFace' : true,
 				'rotateWithFace' : true
 			},
-			
+			'fxLeft' : {
+				'url' : base_url + 'images/overlays/fxLeft.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0.3,
+					'y' : -0.15
+				},
+				'scale' : 0.81,
+				'rotation' : -0.21,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'fxRight' : {
+				'url' : base_url + 'images/overlays/fxRight.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : -0.3,
+					'y' : -0.15
+				},
+				'scale' : 0.81,
+				'rotation' : 0.21,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'gold' : {
+				'url' : base_url + 'images/overlays/gold.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0,
+					'y' : 0
+				},
+				'scale' : 0.95,
+				'rotation' : 0,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'goldLeft' : {
+				'url' : base_url + 'images/overlays/goldLeft.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0.32,
+					'y' : -0.45
+				},
+				'scale' : 0.88,
+				'rotation' : -0.83,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'goldRight' : {
+				'url' : base_url + 'images/overlays/goldRight.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : -0.32,
+					'y' : -0.45
+				},
+				'scale' : 0.88,
+				'rotation' : 0.83,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'polka' : {
+				'url' : base_url + 'images/overlays/polka.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0,
+					'y' : 0
+				},
+				'scale' : 0.95,
+				'rotation' : 0,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'polkaLeft' : {
+				'url' : base_url + 'images/overlays/polkaLeft.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0.31,
+					'y' : -0.36
+				},
+				'scale' : 0.79,
+				'rotation' : -0.40,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'polkaRight' : {
+				'url' : base_url + 'images/overlays/polkaRight.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : -0.31,
+					'y' : -0.36
+				},
+				'scale' : 0.79,
+				'rotation' : 0.40,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
 			'antlers' : {
 				'url' : base_url + 'images/overlays/antlers.png',
 				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
@@ -101,14 +208,12 @@
 					if(panModded % 2 != 0){
 						panModded -=1;
 					}
-					console.log(panModded);
+					//console.log(panModded);
 					if(panModded >= 30){
-						console.log("OVAR, BEOTCHES");
-						toggle_display("turfRight");
+						toggle_display(whatWeBeUsing+"Right");
 					}
 					if(panModded <= -30){
-						console.log("UNDAR, BEOTCHES");
-						toggle_display("turfLeft");
+						toggle_display(whatWeBeUsing+"Left");
 					}
 					if(panModded > -30 && panModded < 30 && whatWeBeUsing != selected){
 						toggle_display(whatWeBeUsing);
@@ -196,20 +301,22 @@
 			if (selected) {
 				form = $('#position');
 				overlay = internals[selected].overlay;
-
 				temp = Math.round(parseFloat(form.find('[data-name="scale"]').slider('value')) * 100) / 100;
 				//form.find('output[for="scale"]').val(temp);
 				overlay.setScale(temp);
+				console.log("Image scale:"+temp);
 
 				temp = parseInt(form.find('[data-name="rotation"]').slider('value'), 10);
 				//form.find('output[for="rotation"]').val(temp);
 				temp = temp * Math.PI / 180;
+				console.log("rotation:"+temp);
 				overlay.setRotation(temp);
 
 				temp = {
 					'x' : Math.round(parseFloat(form.find('[data-name="offset_x"]').slider('value')) * 100) / 100,
 					'y' : Math.round(parseFloat(form.find('[data-name="offset_y"]').slider('value')) * 100) / 100
 				};
+				console.log("offset = X:"+temp.x+",Y:"+temp.y);
 				//form.find('output[for="offset_x"]').val(temp.x);
 				//form.find('output[for="offset_y"]').val(temp.y);
 				overlay.setOffset(temp);
