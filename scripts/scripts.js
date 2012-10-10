@@ -2,8 +2,46 @@
 /*global $:true, gapi:true */
 
 ( function() {"use strict";
+		var whatWeBeUsing = "";
 		var displaying = false;
 		var base_url = $('head > base').prop('href') || '', overlays = {
+			'turf' : {
+				'url' : base_url + 'images/overlays/turf.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0,
+					'y' : -1
+				},
+				'scale' : 0.95,
+				'rotation' : 0,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'turfLeft' : {
+				'url' : base_url + 'images/overlays/turfLeft.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0,
+					'y' : -1
+				},
+				'scale' : 0.95,
+				'rotation' : 0,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			'turfRight' : {
+				'url' : base_url + 'images/overlays/turfRight.png',
+				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+				'offset' : {
+					'x' : 0,
+					'y' : -1
+				},
+				'scale' : 0.95,
+				'rotation' : 0,
+				'scaleWithFace' : true,
+				'rotateWithFace' : true
+			},
+			
 			'antlers' : {
 				'url' : base_url + 'images/overlays/antlers.png',
 				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
@@ -64,7 +102,18 @@
 						panModded -=1;
 					}
 					console.log(panModded);
-					console.log(selected);
+					if(panModded >= 30){
+						console.log("OVAR, BEOTCHES");
+						toggle_display("turfRight");
+					}
+					if(panModded <= -30){
+						console.log("UNDAR, BEOTCHES");
+						toggle_display("turfLeft");
+					}
+					if(panModded > -30 && panModded < 30 && whatWeBeUsing != selected){
+						toggle_display(whatWeBeUsing);
+					}
+					//console.log(selected);
 				}
 			} catch(e) {
 				console.log(e);
@@ -190,6 +239,7 @@
 		//
 		$('#overlays button').on('click', function() {
 			toggle_display(this.id);
+			whatWeBeUsing = this.id;
 		});
 		//ask arran about changing the app format to a full app instead of side app. Add video etc. Makes shit easy.
 
