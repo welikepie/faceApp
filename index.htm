@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Sample Overlays App</title>
+		<base href="https://raw.github.com/welikepie/Google-Hangout-Demo/overlays_extension/">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1">
+		<link rel="stylesheet" href="styles/styles.css" type="text/css">
+		<link rel="stylesheet" href="styles/ui-lightness/jquery-ui-1.8.23.custom.css" type="text/css">
+	</head>
+	<body>
+		<header>
+			<h1>Cute Overlays!</h1>
+			<p>An experiment from We Like Pie.</p>
+		</header>
+		<div id="overlays">
+			<button type="button" class="btn btn-inverse" id="antlers"><img src="images/overlays/antlers-thumbnail.png" alt="Antlers"></button>
+			<button type="button" class="btn btn-inverse" id="fox"><img src="images/overlays/fox-thumbnail.png" alt="Fox Mask"></button>
+			<button type="button" class="btn btn-inverse" id="moose"><img src="images/overlays/moose-thumbnail.png" alt="Moose Antlers"></button>
+			<button type="button" class="btn btn-inverse" id="rabbit"><img src="images/overlays/rabbit-thumbnail.png" alt="Rabbit Ears"></button>
+		</div>
+		<form id="position">
+			<div><span>Scale:</span> <span data-name="scale" data-value="1" data-min="0" data-max="2" data-step="0.01"></span><!-- <output for="scale">--></div>
+			<div><span>Rotation:</span> <span data-name="rotation" data-value="0" data-min="-180" data-max="180" data-step="1"></span><!-- <output for="rotation">°--></div>
+			<div><span>Horizontal:</span> <span data-name="offset_x" data-value="0" data-min="-1" data-max="1" data-step="0.01"></span><!-- <output for="offset_x">--></div>
+			<div><span>Vertical:</span> <span data-name="offset_y" data-value="0" data-min="-1" data-max="1" data-step="0.01"></span><!-- <output for="offset_y">--></div>
+		</form>
+	</body>
+	<script type="text/javascript" src="scripts/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="scripts/jquery-ui-1.8.23.custom.min.js"></script>
+	<script type="text/javascript" src="https://hangoutsapi.talkgadget.google.com/hangouts/api/hangout.js?v=1.2"></script>
+	<script type="text/javascript" src="scripts/scripts.js"></script>
+</html>
