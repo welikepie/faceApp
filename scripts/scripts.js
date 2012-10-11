@@ -472,35 +472,38 @@
 			}
 		};
 		
-		/* apply_position_values_textures = function() {
-			var temp, form, overlay, overdo;
+		 apply_position_values_textures = function() {
+		 	var nombre = faceType+faceTexture
+		 	//faceSkins is original
+		 	//internalTexture is array of overlays.
+			var temp2, form2, overlay2, overdo2;
 			if (selected) {
-				form = $('#position');
-				overlay = internals[selected].overlay;
-				overdo = overlays[selected];
-				temp = Math.round(parseFloat(form.find('[data-name="scale"]').slider('value')) * 100) / 100;
+				form2 = $('#position');
+				overlay2 = internalTexture[nombre].overlay;
+				overdo2 = faceSkins[nombre];
+				temp2 = Math.round(parseFloat(form.find('[data-name="scale"]').slider('value')) * 100) / 100;
 				//form.find('output[for="scale"]').val(temp);
-				overlay.setScale(temp);
-				overdo.setScale(temp)
-				console.log("Image scale:"+temp);
-				temp = parseInt(form.find('[data-name="rotation"]').slider('value'), 10);
+				overlay2.setScale(temp2);
+				overdo2.setScale(temp2)
+				console2.log("Image scale:"+temp2);
+				temp2 = parseInt(form2.find('[data-name="rotation"]').slider('value'), 10);
 				//form.find('output[for="rotation"]').val(temp);
-				temp = temp * Math.PI / 180;
-				console.log("rotation:"+temp);
-				overlay.setRotation(temp);
-				overdo.setRotation(temp);
+				temp2 = temp2 * Math.PI / 180;
+				console.log("rotation:"+temp2);
+				overlay2.setRotation(temp2);
+				overdo2.setRotation(temp2);
 
-				temp = {
-					'x' : Math.round(parseFloat(form.find('[data-name="offset_x"]').slider('value')) * 100) / 100,
-					'y' : Math.round(parseFloat(form.find('[data-name="offset_y"]').slider('value')) * 100) / 100
+				temp2 = {
+					'x' : Math.round(parseFloat(form2.find('[data-name="offset_x"]').slider('value')) * 100) / 100,
+					'y' : Math.round(parseFloat(form2.find('[data-name="offset_y"]').slider('value')) * 100) / 100
 				};
-				console.log("offset = X:"+temp.x+",Y:"+temp.y);
+				console.log("offset = X:"+temp2.x+",Y:"+temp2.y);
 				//form.find('output[for="offset_x"]').val(temp.x);
 				//form.find('output[for="offset_y"]').val(temp.y);
-				overlay.setOffset(temp);
-				overdo.setOffset(temp);
+				overlay2.setOffset(temp2);
+				overdo2.setOffset(temp2);
 			}
-		}; */
+		}; 
 
 		function showDefaultFeed() {
 			var currentHighlightedParticipantId = null;
