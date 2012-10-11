@@ -66,7 +66,6 @@
 			<button type="button" class="btn btn-inverse" id="fx"><img src="https://raw.github.com/amroche/faceApp/master/images/overlays/fxThumb.png" alt="Your graphics card died."></button>
 			<button type="button" class="btn btn-inverse" id="gold"><img src="https://raw.github.com/amroche/faceApp/master/images/overlays/goldThumb.png" alt="Golden Hair"></button>
 			<button type="button" class="btn btn-inverse" id="polka"><img src="https://raw.github.com/amroche/faceApp/master/images/overlays/polkaThumb.png" alt="Polka Hair"></button>
-		
 		</div>
 		<form id="position">
 			<div><span>Scale:</span> <span data-name="scale" data-value="1" data-min="0" data-max="2" data-step="0.01"></span><!-- <output for="scale">--></div>

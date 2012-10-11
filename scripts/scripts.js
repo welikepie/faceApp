@@ -166,7 +166,8 @@
 				'scaleWithFace' : true,
 				'rotateWithFace' : true
 			}
-		}, internals = {}, internalTexture = {}, selected = null,genommen = null load_position_values, apply_position_values, toggle_display, showDefaultFeed;
+		};
+		var internals = {}, internalTexture = {}, selected = null,genommen = null, load_position_values, apply_position_values, toggle_display, toggle_texture, load_position_values_textures, showDefaultFeed;
 
 		function displayPan(faceTrack) {
 			try {
