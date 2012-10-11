@@ -166,7 +166,181 @@
 				'scaleWithFace' : true,
 				'rotateWithFace' : true
 			}
-		}, internals = {}, internalTexture = {}, selected = null,genommen = null load_position_values, apply_position_values, toggle_display, showDefaultFeed;
+		},
+		internals = {},
+		internalTexture = {},
+		selected = null,
+		genommen = null,
+		load_position_values,
+		apply_position_values,
+		toggle_display,
+		toggle_texture,
+		load_position_values_textures,
+		showDefaultFeed,
+
+		ui = {
+			'face': {
+				'currentFaceType': null,
+				'currentFaceTexture': 'polka',
+
+				'changeFaceType': function (face) {
+					if (this.currentFaceType === face) {
+						this.currentFaceType = null;
+					} else {
+						this.currentFaceType = face;
+					}
+					this.changeOverlay();
+				},
+				'changeFaceTexture': function (texture) {
+					if (this.currentFaceTexture !== texture) {
+						this.currentFaceTexture = texture;
+						this.changeOverlay();
+					}
+				},
+				'changeOverlay': function () {
+					if (!this.currentFaceType) {
+						console.log('Disabling face overlay.');
+						/* MAGIC GOES HERE */
+					} else {
+						console.log('Changing overlay to type [' + this.currentFaceType + '] and texture [' + this.currentFaceTexture + '].');
+						/* MAGIC GOES HERE */
+					}
+				}
+			},
+			'hair': {
+				'currentHair': null,
+				'changeHair': function (hair) {
+					if (this.currentHair === hair) {
+						this.currentHair = null;
+						console.log('Disabling hair overlay.');
+						/* MAGIC GOES HERE */
+					} else {
+						this.currentHair = hair;
+						console.log('Changing hair overlay to [' + this.currentHair + '].');
+						/* MAGIC GOES HERE */
+					}
+				}
+			},
+			'tweaking': {
+
+				'FACE': 0, // Constant to mark that transformation applies to face overlay
+				'HAIR': 1, // Constant to mark that transformation applies to hair overlay
+
+				'changeScale': function (type, x, y) {
+					// Type as one of constants
+					// X and Y between 0 and 2
+					console.log('Changing ' + (type === this.HAIR ? 'hair' : 'face') + ' overlay scale to [' + x + ', ' + y + '].');
+					/* MAGIC GOES HERE */
+				},
+				'changeRotation': function (type, degree) {
+					// Degree returned as regular degrees, between -90 and 90
+					console.log('Changing ' + (type === this.HAIR ? 'hair' : 'face') + ' overlay rotation to ' + degree + '.');
+					/* MAGIC GOES HERE */
+				},
+				'changeOffsetX': function (type, x) {
+					// Type as one of constants
+					// X and Y between -1 and 1
+					console.log('Changing ' + (type === this.HAIR ? 'hair' : 'face') + ' overlay X offset to [' + x + '].');
+					/* MAGIC GOES HERE */
+				},
+				'changeOffsetY': function (type, y) {
+					// Type as one of constants
+					// X and Y between -1 and 1
+					console.log('Changing ' + (type === this.HAIR ? 'hair' : 'face') + ' overlay Y offset to [' + y + '].');
+					/* MAGIC GOES HERE */
+				}
+				
+			}
+		};
+		
+		// Initialise the UI
+		$('.tabs').tabs();
+		
+		$('#faces button')
+			.filter('[name="face"]').on('click', function (ev) {
+				ev.preventDefault();
+				ui.face.changeFaceType(this.value);
+			}).end()
+			.filter('[name="texture"]').on('click', function (ev) {
+				ev.preventDefault();
+				ui.face.changeFaceTexture(this.value);
+			}).end()
+			.filter('[name="hair"]').on('click', function (ev) {
+				ev.preventDefault();
+				ui.hair.changeHair(this.value);
+			}).end();
+		
+		$('input[type="range"]')
+		.replaceWith(function () {
+		
+			var el = document.createElement('div');
+			el.className = 'range';
+			el.setAttribute('data-min', this.getAttribute('min'));
+			el.setAttribute('data-max', this.getAttribute('max'));
+			el.setAttribute('data-step', this.getAttribute('step'));
+			el.setAttribute('data-name', this.getAttribute('name'));
+			el.setAttribute('data-value', this.getAttribute('value'));
+			
+			return el;
+		
+		});
+		$('#tweaking')
+			.find('.texture div.range').each(function () {
+			
+				var type = this.getAttribute('data-name');
+			
+				$(this).slider({
+					'value': parseFloat(this.getAttribute('data-value')),
+					'min': parseFloat(this.getAttribute('data-min')),
+					'max': parseFloat(this.getAttribute('data-max')),
+					'step': parseFloat(this.getAttribute('data-step')),
+					'change': function (ev, data) {
+						switch (type) {
+							case 'scale':
+								ui.tweaking.changeScale(ui.tweaking.FACE, data.value, data.value);
+								break;
+							case 'rotation':
+								ui.tweaking.changeRotation(ui.tweaking.FACE, data.value);
+								break;
+							case 'offset_x':
+								ui.tweaking.changeOffsetX(ui.tweaking.FACE, data.value);
+								break;
+							case 'offset_y':
+								ui.tweaking.changeOffsetY(ui.tweaking.FACE, data.value);
+								break;
+						}
+					}
+				});
+			
+			}).end()
+			.find('.hair div.range').each(function () {
+			
+				var type = this.getAttribute('data-name');
+			
+				$(this).slider({
+					'value': parseFloat(this.getAttribute('data-value')),
+					'min': parseFloat(this.getAttribute('data-min')),
+					'max': parseFloat(this.getAttribute('data-max')),
+					'step': parseFloat(this.getAttribute('data-step')),
+					'change': function (ev, data) {
+						switch (type) {
+							case 'scale':
+								ui.tweaking.changeScale(ui.tweaking.HAIR, data.value, data.value);
+								break;
+							case 'rotation':
+								ui.tweaking.changeRotation(ui.tweaking.HAIR, data.value);
+								break;
+							case 'offset_x':
+								ui.tweaking.changeOffsetX(ui.tweaking.HAIR, data.value);
+								break;
+							case 'offset_y':
+								ui.tweaking.changeOffsetY(ui.tweaking.HAIR, data.value);
+								break;
+						}
+					}
+				});
+			
+			}).end();
 
 		function displayPan(faceTrack) {
 			try {
@@ -192,7 +366,7 @@
 			} catch(e) {
 				console.log(e);
 			}
-		}
+		};
 
 		toggle_texture = function(){
 			var typ = facetype + facetexture;
@@ -418,4 +592,4 @@
 
 		gapi.hangout.av.effects.onFaceTrackingDataChanged.add(displayPan);
 
-	}()); 
+	}());

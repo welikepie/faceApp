@@ -1,0 +1,91 @@
+@charset: 'utf-8';
+@import 'smoothness/jquery-ui-1.9.0.custom.min.css';
+
+@base: 16px;
+
+html, body {
+    width: 300px;
+    margin: 0; padding: 0;
+}
+header {
+    display: block;
+    padding: @base;
+    h1 { margin: 0; }
+}
+
+// Tabs
+.tabs {
+    padding: 4px;
+	border: none !important;
+    ul li { font-size: 12px; }
+    // Tab content
+    > section {
+        font-size: 12px;
+		> div {
+			margin: 0 0 @base;
+			overflow: hidden;
+		}
+        &#faces {
+            padding: 8px;
+            button {
+                display: block;
+                float: left;
+				background-position: center center;
+				background-repeat: no-repeat;
+            }
+            .small {
+                button {
+                    width: 48px;
+                    height: 48px;
+                    + button { margin-left: 9px; }
+					text-indent: -99999px;
+                }
+            }
+            .medium {
+                button {
+                    width: 64px;
+                    height: 64px;
+                    + button { margin-left: 6px; }
+					text-indent: -99999px;
+                }
+            }
+			[name="texture"] {
+				&[value="silver"] { background-image: url('../images/textures/silver-thumb.png'); }
+				&[value="badfx"] { background-image: url('../images/textures/badfx-thumb.png'); }
+				&[value="gold"] { background-image: url('../images/textures/gold-thumb.png'); }
+				&[value="polka"] { background-image: url('../images/textures/polka-thumb.png'); }
+			}
+			[name="hair"] {
+				&[value="turf"] { background-image: url('../images/hair/turf-thumb.png'); }
+				&[value="badfx"] { background-image: url('../images/hair/badfx-thumb.png'); }
+				&[value="gold"] { background-image: url('../images/hair/gold-thumb.png'); }
+				&[value="polka"] { background-image: url('../images/hair/polka-thumb.png'); }
+			}
+			[name="face"] {
+				&[value="long"] { background-image: url('../images/faces/long-thumb.png'); }
+				&[value="oval"] { background-image: url('../images/faces/oval-thumb.png'); }
+				&[value="round"] { background-image: url('../images/faces/round-thumb.png'); }
+				&[value="square"] { background-image: url('../images/faces/square-thumb.png'); }
+				&[value="triangle"] { background-image: url('../images/faces/triangle-thumb.png'); }
+			}
+        }
+        &#tweaking {
+            padding: 8px;
+            .slider {
+                display: block;
+                overflow: hidden;
+				+ .slider { margin-top: 4px; }
+                span { float: left; overflow: hidden; width: 70px; }
+            }
+            input[type="range"], div.range {
+                display: block;
+                height: 8px;
+				margin: 4px 0 4px 78px;
+            }
+        }
+    }
+}
+
+h1, h2, h3, p { margin: 0 0 @base; padding: 0; }
+
+@import 'buttons';
