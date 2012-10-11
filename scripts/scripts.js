@@ -197,6 +197,8 @@
 
 		toggle_texture = function(){
 			var typ = facetype + facetexture;
+			//typ is type (of texture)
+			//gegenstand is item.
 			var gegenstand;
 			if(!(typ in faceSkins)){
 				throw new Error('`' + typ + '` is not a valid overlay type.');
@@ -381,10 +383,12 @@
 
 		//
 		$('#faceTypes button').on('click',function(){
+			console.log(this.id);
 			facetype = this.id;
 			toggle_texture();
 		});
 		$('#textures button').on('click',function(){
+			console.log(this.id);
 			facetexture = this.id;
 			toggle_texture();
 		});
