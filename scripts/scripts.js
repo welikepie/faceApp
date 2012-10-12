@@ -1,810 +1,600 @@
-/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:true, undef:true, unused:true, curly:true, browser:true, devel:true, indent:4, maxerr:50 */
-/*global $:true, gapi:true */
+/*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:true, undef:true, unused:true, curly:true, browser:true, indent:4, maxerr:50 */
+/*global $:true, _:true, gapi:true, signals:true */
 
-( function() {"use strict";
-		var oldHair = "";
-		var oldFace = ""
-		var whatWeBeUsing = "";
-		var displaying = false;
-		var facetexture = "silver";
-		var facetype = "faceTexture1";
-		var base_url = $('head > base').prop('href') || '';
-		var faceSkins = {
-			'faceType1silver':{
-				'url' : base_url + 'images/overlays/faceTextures/faceTexture1silver.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0,
-					'y' : 0
-				},
-				'scale' : 0.95,
-				'rotation' : 0,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			}	
-		};
-		var overlays = {
-			'turf' : {
-				'url' : base_url + 'images/hair/turf.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0,
-					'y' : 0
-				},
-				'scale' : 0.95,
-				'rotation' : 0,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'turfLeft' : {
-				'url' : base_url + 'images/hair/turf-left.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0.3,
-					'y' : -0.15
-				}, 
-				'scale' : 0.81,
-				'rotation' : -0.21,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'turfRight' : {
-				'url' : base_url + 'images/hair/turf-light.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : -0.3,
-					'y' : -0.15
-				},
-				'scale' : 0.81,
-				'rotation' : 0.21,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'badfx' : {
-				'url' : base_url + 'images/hair/badfx.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0,
-					'y' : 0
-				},
-				'scale' : 0.95,
-				'rotation' : 0,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'badfxLeft' : {
-				'url' : base_url + 'images/hair/badfx-left.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0.33,
-					'y' : -0.53
-				},
-				'scale' : 0.79,
-				'rotation' : -0.20,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'badfxRight' : {
-				'url' : base_url + 'images/hair/badfx-right.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : -0.33,
-					'y' : -0.53
-				},
-				'scale' : 0.79,
-				'rotation' : 0.20,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'gold' : {
-				'url' : base_url + 'images/hair/gold.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0,
-					'y' : 0
-				},
-				'scale' : 0.95,
-				'rotation' : 0,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'goldLeft' : {
-				'url' : base_url + 'images/hair/gold-left.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0.32,
-					'y' : -0.45
-				},
-				'scale' : 0.88,
-				'rotation' : -0.83,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'goldRight' : {
-				'url' : base_url + 'images/hair/gold-right.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : -0.32,
-					'y' : -0.45
-				},
-				'scale' : 0.88,
-				'rotation' : 0.83,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'polka' : {
-				'url' : base_url + 'images/hair/polka.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0,
-					'y' : 0
-				},
-				'scale' : 0.95,
-				'rotation' : 0,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'polkaLeft' : {
-				'url' : base_url + 'images/hair/polka-left.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : 0.31,
-					'y' : -0.36
-				},
-				'scale' : 0.68,
-				'rotation' : -0.40,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			},
-			'polkaRight' : {
-				'url' : base_url + 'images/hair/polka-right.png',
-				'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
-				'offset' : {
-					'x' : -0.31,
-					'y' : -0.36
-				},
-				'scale' : 0.68,
-				'rotation' : 0.40,
-				'scaleWithFace' : true,
-				'rotateWithFace' : true
-			}
-		},
-		internals = {},
-		internalTexture = {},
-		selected = null,
-		genommen = null,
-		load_position_values,
-		apply_position_values,
-		toggle_display,
-		toggle_texture,
-		load_position_values_textures,
-		showDefaultFeed,
+gapi.hangout.onApiReady.add(function () {
+    "use strict";
 
-		ui = {
-			'face': {
-				'currentFaceType': null,
-				'currentFaceTexture': 'polka',
-
-				'changeFaceType': function (face) {
-					/*if (this.currentFaceType === face) {
-						this.currentFaceType = null;
-					} else {*/
-						this.currentFaceType = face;
-						facetype = face;
-					/*}*/
-					this.changeOverlay();
-				},
-				'changeFaceTexture': function (texture) {
-					if (this.currentFaceTexture !== texture) {
-						this.currentFaceTexture = texture;
-						facetexture = texture;
-						this.changeOverlay();
-					}
-				},
-				'changeOverlay': function () {
-					/*if (!this.currentFaceType) {
-						console.log('Disabling face overlay.');
-					} else {*/
-						console.log('Changing overlay to type [' + this.currentFaceType + '] and texture [' + this.currentFaceTexture + '].');
-						toggle_texture();
-					/*}*/
-				}
-			},
-			'hair': {
-				'currentHair': null,
-				'changeHair': function (hair) {
-					/*if (this.currentHair === hair) {
-						this.currentHair = null;
-						console.log('Disabling hair overlay.');
-					} else {*/
-						this.currentHair = hair;
-						whatWeBeUsing = hair;
-						console.log('Changing hair overlay to [' + this.currentHair + '].');
-						toggle_display(hair);
-					}
-				}
-			},
-			'tweaking': {
-
-				'FACE': 0, // Constant to mark that transformation applies to face overlay
-				'HAIR': 1, // Constant to mark that transformation applies to hair overlay
-
-				'changeScale': function (type, x, y) {
-					// Type as one of constants
-					// X and Y between 0 and 2
-					console.log('Changing ' + (type === this.HAIR ? 'hair' : 'face') + ' overlay scale to [' + x + ', ' + y + '].');
-					if (type === this.HAIR) {
-						apply_position_values();
-					} else {
-						apply_position_values_textures();
-					}
-					/* MAGIC GOES HERE */
-				},
-				'changeRotation': function (type, degree) {
-					// Degree returned as regular degrees, between -90 and 90
-					console.log('Changing ' + (type === this.HAIR ? 'hair' : 'face') + ' overlay rotation to ' + degree + '.');
-					if (type === this.HAIR) {
-						apply_position_values();
-					} else {
-						apply_position_values_textures();
-					}
-					/* MAGIC GOES HERE */
-				},
-				'changeOffsetX': function (type, x) {
-					// Type as one of constants
-					// X and Y between -1 and 1
-					console.log('Changing ' + (type === this.HAIR ? 'hair' : 'face') + ' overlay X offset to [' + x + '].');
-					if (type === this.HAIR) {
-						apply_position_values();
-					} else {
-						apply_position_values_textures();
-					}
-					/* MAGIC GOES HERE */
-				},
-				'changeOffsetY': function (type, y) {
-					// Type as one of constants
-					// X and Y between -1 and 1
-					console.log('Changing ' + (type === this.HAIR ? 'hair' : 'face') + ' overlay Y offset to [' + y + '].');
-					if (type === this.HAIR) {
-						apply_position_values();
-					} else {
-						apply_position_values_textures();
-					}
-					/* MAGIC GOES HERE */
-				}
+    var base_url = $('head > base').prop('href') || '',
+    
+        faces = {
+        
+            'path': base_url + 'images/textures/{type}-{texture}.png',
+            'current': null,
+            'cache': {},
+            
+            'change': null,
+            'changed': new signals.Signal(),
+            
+            'definitions': {
+                'long': {
+                    'textures': [
+                        'silver',
+                        'gold',
+                        'polka',
+                        'badfx'
+                    ],
+                    'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                    'offset' : {
+                        'x' : 0,
+                        'y' : 0
+                    },
+                    'scale' : 0.95,
+                    'rotation' : 0,
+                    'scaleWithFace' : true,
+                    'rotateWithFace' : true
+                },
+                'oval': {
+                    'textures': [
+                        'silver',
+                        'gold',
+                        'polka',
+                        'badfx'
+                    ],
+                    'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                    'offset' : {
+                        'x' : 0,
+                        'y' : 0
+                    },
+                    'scale' : 0.95,
+                    'rotation' : 0,
+                    'scaleWithFace' : true,
+                    'rotateWithFace' : true
+                },
+                'round': {
+                    'textures': [
+                        'silver',
+                        'gold',
+                        'polka',
+                        'badfx'
+                    ],
+                    'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                    'offset' : {
+                        'x' : 0,
+                        'y' : 0
+                    },
+                    'scale' : 0.95,
+                    'rotation' : 0,
+                    'scaleWithFace' : true,
+                    'rotateWithFace' : true
+                },
+                'square': {
+                    'textures': [
+                        'silver',
+                        'gold',
+                        'polka',
+                        'badfx'
+                    ],
+                    'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                    'offset' : {
+                        'x' : 0,
+                        'y' : 0
+                    },
+                    'scale' : 0.95,
+                    'rotation' : 0,
+                    'scaleWithFace' : true,
+                    'rotateWithFace' : true
+                },
+                'triangle': {
+                    'textures': [
+                        'silver',
+                        'gold',
+                        'polka',
+                        'badfx'
+                    ],
+                    'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                    'offset' : {
+                        'x' : 0,
+                        'y' : 0
+                    },
+                    'scale' : 0.95,
+                    'rotation' : 0,
+                    'scaleWithFace' : true,
+                    'rotateWithFace' : true
+                }
+            }
+        
+        },
+        
+        hair = {
+        
+            'path': base_url + 'images/hair/{type}-{direction}.png',
+            'pan_ranges': {
+                'left': [-180, -15],
+                'right': [15, 180]
+            },
+            'current': null,
+            'cache': {},
+            
+            'change': null,
+            'changed': new signals.Signal(),
+			'refreshed': new signals.Signal(),
+            
+            'definitions': {
+                'badfx': {
+                    'left': {
+                        'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                        'offset' : {
+                            'x' : 0,
+                            'y' : 0
+                        },
+                        'scale' : 0.95,
+                        'rotation' : 0,
+                        'scaleWithFace' : true,
+                        'rotateWithFace' : true
+                    },
+                    'right': {
+                        'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                        'offset' : {
+                            'x' : 0,
+                            'y' : 0
+                        },
+                        'scale' : 0.95,
+                        'rotation' : 0,
+                        'scaleWithFace' : true,
+                        'rotateWithFace' : true
+                    }
+                },
+                'gold': {
+                    'left': {
+                        'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                        'offset' : {
+                            'x' : 0,
+                            'y' : 0
+                        },
+                        'scale' : 0.95,
+                        'rotation' : 0,
+                        'scaleWithFace' : true,
+                        'rotateWithFace' : true
+                    },
+                    'right': {
+                        'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                        'offset' : {
+                            'x' : 0,
+                            'y' : 0
+                        },
+                        'scale' : 0.95,
+                        'rotation' : 0,
+                        'scaleWithFace' : true,
+                        'rotateWithFace' : true
+                    }
+                },
+                'polka': {
+                    'left': {
+                        'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                        'offset' : {
+                            'x' : 0,
+                            'y' : 0
+                        },
+                        'scale' : 0.95,
+                        'rotation' : 0,
+                        'scaleWithFace' : true,
+                        'rotateWithFace' : true
+                    },
+                    'right': {
+                        'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                        'offset' : {
+                            'x' : 0,
+                            'y' : 0
+                        },
+                        'scale' : 0.95,
+                        'rotation' : 0,
+                        'scaleWithFace' : true,
+                        'rotateWithFace' : true
+                    }
+                },
+                'turf': {
+                    'left': {
+                        'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                        'offset' : {
+                            'x' : 0,
+                            'y' : 0
+                        },
+                        'scale' : 0.95,
+                        'rotation' : 0,
+                        'scaleWithFace' : true,
+                        'rotateWithFace' : true
+                    },
+                    'right': {
+                        'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
+                        'offset' : {
+                            'x' : 0,
+                            'y' : 0
+                        },
+                        'scale' : 0.95,
+                        'rotation' : 0,
+                        'scaleWithFace' : true,
+                        'rotateWithFace' : true
+                    }
+                }
+            }
+        
+        };
+    
+    (function () {
+    
+        var current_direction = 'right',
+            direction_calc = _.chain(hair.pan_ranges)
+                .pairs()
+                .map(function (item) {
+                    return [
+                        item[0],
+                        _.map(item[1], function (x) { return x * Math.PI / 180; })
+                    ];
+                }),
+        
+            load_overlay = function (url, specs) {
+            
+                var resource,
+                    overlay;
+                
+                resource = gapi.hangout.av.effects.createImageResource(url);
+                overlay = resource.createFaceTrackingOverlay({
+                    'scale' : specs.scale,
+                    'rotation' : specs.rotation,
+                    'offset' : specs.offset,
+                    'scaleWithFace' : specs.scaleWithFace,
+                    'rotateWithFace' : specs.rotateWithFace,
+                    'trackingFeature' : specs.trackingFeature
+                });
+                overlay.setVisible(false);
+                
+                return {
+                    'resource': resource,
+                    'overlay': overlay
+                };
+            
+            };
+        
+        faces.change = function (type, texture) {
+        
+            var new_overlay,
+                old_overlay = faces.current ? faces.cache[faces.current[0]][faces.current[1]].overlay : null,
+                hair_overlay = hair.current && hair.current[1] ? hair.cache[hair.current[0]][hair.current[1]].overlay : null,
 				
-			}
-		};
-		
-		// Initialise the UI
-		$('.tabs').tabs();
-		
-		$('#faces button')
-			.filter('[name="face"]').on('click', function (ev) {
-				ev.preventDefault();
-				ui.face.changeFaceType(this.value);
-			}).end()
-			.filter('[name="texture"]').on('click', function (ev) {
-				ev.preventDefault();
-				ui.face.changeFaceTexture(this.value);
-			}).end()
-			.filter('[name="hair"]').on('click', function (ev) {
-				ev.preventDefault();
-				ui.hair.changeHair(this.value);
-			}).end();
-		
-		$('input[type="range"]')
-		.replaceWith(function () {
-		
-			var el = document.createElement('div');
-			el.className = 'range';
-			el.setAttribute('data-min', this.getAttribute('min'));
-			el.setAttribute('data-max', this.getAttribute('max'));
-			el.setAttribute('data-step', this.getAttribute('step'));
-			el.setAttribute('data-name', this.getAttribute('name'));
-			el.setAttribute('data-value', this.getAttribute('value'));
-			
-			return el;
-		
-		});
-		$('#tweaking')
-			.find('.texture div.range').each(function () {
-			
-				var type = this.getAttribute('data-name');
-			
-				$(this).slider({
-					'value': parseFloat(this.getAttribute('data-value')),
-					'min': parseFloat(this.getAttribute('data-min')),
-					'max': parseFloat(this.getAttribute('data-max')),
-					'step': parseFloat(this.getAttribute('data-step')),
-					'change': function (ev, data) {
-						switch (type) {
-							case 'scale':
-								ui.tweaking.changeScale(ui.tweaking.FACE, data.value, data.value);
-								break;
-							case 'rotation':
-								ui.tweaking.changeRotation(ui.tweaking.FACE, data.value);
-								break;
-							case 'offset_x':
-								ui.tweaking.changeOffsetX(ui.tweaking.FACE, data.value);
-								break;
-							case 'offset_y':
-								ui.tweaking.changeOffsetY(ui.tweaking.FACE, data.value);
-								break;
-						}
-					}
-				});
-			
-			}).end()
-			.find('.hair div.range').each(function () {
-			
-				var type = this.getAttribute('data-name');
-			
-				$(this).slider({
-					'value': parseFloat(this.getAttribute('data-value')),
-					'min': parseFloat(this.getAttribute('data-min')),
-					'max': parseFloat(this.getAttribute('data-max')),
-					'step': parseFloat(this.getAttribute('data-step')),
-					'change': function (ev, data) {
-						switch (type) {
-							case 'scale':
-								ui.tweaking.changeScale(ui.tweaking.HAIR, data.value, data.value);
-								break;
-							case 'rotation':
-								ui.tweaking.changeRotation(ui.tweaking.HAIR, data.value);
-								break;
-							case 'offset_x':
-								ui.tweaking.changeOffsetX(ui.tweaking.HAIR, data.value);
-								break;
-							case 'offset_y':
-								ui.tweaking.changeOffsetY(ui.tweaking.HAIR, data.value);
-								break;
-						}
-					}
-				});
-			
-			}).end();
-
-		function displayPan(faceTrack) {
-			try {
-				//		toggle_display(this.id); //this will change shit. We have ID's, etc.
-				//	console.log(displaying); //prints whether overlays have been used yet.
-				if (displaying == true) {
-					var panModded = Math.floor(faceTrack.pan * 180 / Math.PI);
-					if(panModded % 2 != 0){
-						panModded -=1;
-					}
-					//console.log(panModded);
-					if(panModded >= 30){
-						toggle_display(whatWeBeUsing+"Right");
-					}
-					if(panModded <= -30){
-						toggle_display(whatWeBeUsing+"Left");
-					}
-					//console.log(panModded);
-					if(panModded > -30 && panModded < 30 && whatWeBeUsing != oldHair){
-						//console.log("THING");
-						//console.log(oldHair);
-//						internals[oldHair].overlay.dispose();
-//						internals[whatWeBeUsing+"Left"].overlay.setVisible(false);
-//						internals[whatWeBeUsing+"Right"].overlay.setVisible(false);
-					}
-					if(panModded > -30 && panModded < 30 && whatWeBeUsing != selected){
-						toggle_display(whatWeBeUsing);
-					}
-					//console.log(selected);
-				}
-			} catch(e) {
-				console.log(e);
-			}
-		};
-
-		toggle_texture = function(){
-			var typ = facetype + facetexture;
-			//typ is type (of texture)
-			//gegenstand is item.
-			var gegenstand;
-			if(!(typ in faceSkins)){
-				throw new Error('`' + typ + '` is not a valid overlay type.');
-			}
-			
-			//console.log(faceSkins[typ].url);
-			// If first call to toggle, assume the image has not been loaded
-			if (!( typ in internalTexture)) {
-			/*	console.log("aand loading");		
-				internalTexture[typ] = {
-					'resource' : gapi.hangout.av.effects.createImageResource(faceSkins[typ].url),
-					'overlay' : null
-				};
-		
-				internalTexture[typ].overlay = internalTexture[typ].resource.createFaceTrackingOverlay({
-					'scale' : faceSkins[typ].scale,
-					'rotation' : faceSkins[typ].rotation,
-					'offset' : faceSkins[typ].offset,
-					'scaleWithFace' : faceSkins[typ].scaleWithFace,
-					'rotateWithFace' : faceSkins[typ].rotateWithFace,
-					'trackingFeature' : faceSkins[typ].trackingFeature
-				});
-				//check if loading of resources is fucking the order or the order of creation by loading resources at beginning.
-				genommen = typ; // mach 'nen neuen variable fuer selected.
-
-				for (gegenstand in internalTexture) {
-					if (internalTexture.hasOwnProperty(gegenstand)) {
-						internalTexture[gegenstand].overlay.setVisible(gegenstand === typ);
-					}
-				}
-				load_position_values_textures(); //re-write for faceSkins */
-			} else {
-								
-				genommen = typ;
-				for (gegenstand in internalTexture) {
-					if (internalTexture.hasOwnProperty(gegenstand)) {
-						internalTexture[gegenstand].overlay.setVisible(gegenstand === typ);
-					}
-				}
-				load_position_values_textures(); //re-write this for faceSkins
-				if(whatWeBeUsing!= ""){
-					if(internals[whatWeBeUsing+"Left"].overlay!= null){
-						internals[whatWeBeUsing+"Left"].overlay.dispose();
-						internals[whatWeBeUsing+"Left"].overlay = internals[type].resource.createFaceTrackingOverlay({
-							'scale' : overlays[whatWeBeUsing+"Left"].scale,
-							'rotation' : overlays[whatWeBeUsing+"Left"].rotation,
-							'offset' : overlays[whatWeBeUsing+"Left"].offset,
-							'scaleWithFace' : overlays[whatWeBeUsing+"Left"].scaleWithFace,
-							'rotateWithFace' : overlays[whatWeBeUsing+"Left"].rotateWithFace,
-							'trackingFeature' : overlays[whatWeBeUsing+"Left"].trackingFeature
-							});		
-						}
-						if(internals[whatWeBeUsing+"Right"].overlay!= null){
-						internals[whatWeBeUsing+"Right"].overlay.dispose();
-						
-					internals[whatWeBeUsing+"Right"].overlay = internals[type].resource.createFaceTrackingOverlay({
-							'scale' : overlays[whatWeBeUsing+"Right"].scale,
-							'rotation' : overlays[whatWeBeUsing+"Right"].rotation,
-							'offset' : overlays[whatWeBeUsing+"Right"].offset,
-							'scaleWithFace' : overlays[whatWeBeUsing+"Right"].scaleWithFace,
-							'rotateWithFace' : overlays[whatWeBeUsing+"Right"].rotateWithFace,
-							'trackingFeature' : overlays[whatWeBeUsing+"Right"].trackingFeature
-					});
-					}
-						//internals[whatWeBeUsing+"Left"].overlay.setVisible(true);
-						//internals[whatWeBeUsing+"Right"].overlay.setVisible(true);
-						console.log("thing:"+whatWeBeUsing);
-					}
-
-			}			
-//			toggle_display(whatWeBeUsing);
-			
-		}
-		
-		
-		toggle_display = function(type) {
-			displaying = true;
-			var item;
-			//console.log(displaying);
-			//Validate existence of overlay type
-
-			if (!( type in overlays)) {
-				throw new Error('`' + type + '` is not a valid overlay type.');
-			}
-
-			// If first call to toggle, assume the image has not been loaded
-			if (!( type in internals)) {
-
-				internals[type] = {
-					'resource' : gapi.hangout.av.effects.createImageResource(overlays[type].url),
-					'overlay' : null
-				};
-
-			/*	internals[type].overlay = internals[type].resource.createFaceTrackingOverlay({
-					'scale' : overlays[type].scale,
-					'rotation' : overlays[type].rotation,
-					'offset' : overlays[type].offset,
-					'scaleWithFace' : overlays[type].scaleWithFace,
-					'rotateWithFace' : overlays[type].rotateWithFace,
-					'trackingFeature' : overlays[type].trackingFeature
-				});
-				selected = type;
-
-				for (item in internals) {
-					if (internals.hasOwnProperty(item)) {
-						internals[item].overlay.setVisible(item === type);
-					}
-				}
-				load_position_values();*/
-
-			} else {
-				try{
-				if(internals[type].overlay == null || internals[type].overlay.isDisposed()){
-				internals[type].overlay = internals[type].resource.createFaceTrackingOverlay({
-					'scale' : overlays[type].scale,
-					'rotation' : overlays[type].rotation,
-					'offset' : overlays[type].offset,
-					'scaleWithFace' : overlays[type].scaleWithFace,
-					'rotateWithFace' : overlays[type].rotateWithFace,
-					'trackingFeature' : overlays[type].trackingFeature
-			});
-			} 
-			}
-			catch(j){
-				console.log(j);
-			}
-			
-			//console.log(internals[type].overlay);
-			//console.log(internals);
-			//console.log(internals[type]);
-			//console.log(overlays[type].overlay);
-				//selected = type;
-				internals[type].overlay.setVisible(false);
-				selected = type;
-			//	internals[type]
-			//console.log(oldHair);
-			//console.log(oldHair!="");
-			if(oldHair!=""){
-			internals[oldHair].overlay.setVisible(false);
-			//console.log("done");
-			}
-				for (item in internals) {
-					if (internals.hasOwnProperty(item) && item === type) {
-						internals[item].overlay.setVisible(item === type);
-					}
-				}
-				load_position_values();
-			}
-				oldHair = type;
-		};
-		load_position_values = function() {
-			var temp, form, overlay;
-
-			if (selected) {
-
-				form = $('#tweaking .hair');
-				overlay = internals[selected].overlay;
-
-				temp = Math.round(overlay.getScale() * 100) / 100;
-				form.find('[data-name="scale"]').slider('value', temp);
-
-				temp = Math.round(overlay.getRotation() * 180 / Math.PI);
-				form.find('[data-name="rotation"]').slider('value', temp);
-
-				temp = Math.round(overlay.getOffset().x * 100) / 100;
-				form.find('[data-name="offset_x"]').slider('value', temp);
-
-				temp = Math.round(overlay.getOffset().y * 100) / 100;
-				form.find('[data-name="offset_y"]').slider('value', temp);
-
-			}
-
-		};
-		
-		load_position_values_textures = function() {
-			var temp2, form2, overlay2;
-			if (genommen) {
-				form2 = $('#tweaking .texture');
-				overlay2 = internalTexture[genommen].overlay;
-
-				temp2 = Math.round(overlay2.getScale() * 100) / 100;
-				form2.find('[data-name="scale"]').slider('value', temp2);
-
-				temp2 = Math.round(overlay2.getRotation() * 180 / Math.PI);
-				form2.find('[data-name="rotation"]').slider('value', temp2);
-
-				temp2 = Math.round(overlay2.getOffset().x * 100) / 100;
-				form2.find('[data-name="offset_x"]').slider('value', temp2);
-
-				temp2 = Math.round(overlay2.getOffset().y * 100) / 100;
-				form2.find('[data-name="offset_y"]').slider('value', temp2);
-			}
-		};
-		
-		apply_position_values = function() {
-			var temp, form, overlay, overdo, overdoOther, isLeft; //true if Left
-			if (selected) {
-				console.log(selected);
-				console.log(selected.indexOf("Left"));
-				if(selected.indexOf("Left")== -1){
-					isLeft = false;
-					console.log("ISRIGHT");
-				}
-				if(selected.indexOf("Left")>= 0){
-					isLeft = true;
-					console.log("ISLEFT");
-				}
-				
-				//whatWeBeUsing has the type.
-				
-				form = $('#tweaking .hair');
-				overlay = internals[selected].overlay;
-				overdo = overlays[selected];
-				console.log(isLeft);
-				if(isLeft == true){
-					overdoOther = overlays[whatWeBeUsing+"Right"];
-				}
-				if(isLeft == false){
-					overdoOther = overlays[whatWeBeUsing+"Left"];
-				}
-				console.log(overdoOther);
-				
-				temp = Math.round(parseFloat(form.find('[data-name="scale"]').slider('value')) * 100) / 100;
-				//form.find('output[for="scale"]').val(temp);
-				overlay.setScale(temp);
-				console.log(overdo);
-				overdo.scale=temp;
-				overdoOther.scale=temp;
-				console.log("Image scale:"+temp);
-
-				temp = parseInt(form.find('[data-name="rotation"]').slider('value'), 10);
-				//form.find('output[for="rotation"]').val(temp);
-				temp = temp * Math.PI / 180;
-				console.log("rotation:"+temp);
-				overlay.setRotation(temp);
-				overdo.rotation = temp;
-				
-				if(isLeft == true){
-						overdoOther.rotation = (temp*-1);
-					}
-				if(isLeft == false){
-						overdoOther.rotation = temp;
-					}
-	
-				temp = {
-					'x' : Math.round(parseFloat(form.find('[data-name="offset_x"]').slider('value')) * 100) / 100,
-					'y' : Math.round(parseFloat(form.find('[data-name="offset_y"]').slider('value')) * 100) / 100
-				};
-				
-				console.log("offset = X:"+temp.x+",Y:"+temp.y);
-				//form.find('output[for="offset_x"]').val(temp.x);
-				//form.find('output[for="offset_y"]').val(temp.y);
-				overlay.setOffset(temp);
-				overdo.offset = temp;
-			if(isLeft == true){
-						overdoOther.offset = ({'x':temp.x*-1,'y':temp.y});
-					}
-			if(isLeft == false){
-						overdoOther.offset = temp;
-					}
-			}
-		};
-		
-		 apply_position_values_textures = function() {
-		 	var nombre = faceType+faceTexture
-		 	//faceSkins is original
-		 	//internalTexture is array of overlays.
-			var temp2, form2, overlay2, overdo2;
-			if (selected) {
-				form2 = $('#tweaking .texture');
-				overlay2 = internalTexture[nombre].overlay;
-				overdo2 = faceSkins[nombre];
-				temp2 = Math.round(parseFloat(form.find('[data-name="scale"]').slider('value')) * 100) / 100;
-				//form.find('output[for="scale"]').val(temp);
-				overlay2.setScale(temp2);
-				overdo2.setScale(temp2)
-				console2.log("Image scale:"+temp2);
-				temp2 = parseInt(form2.find('[data-name="rotation"]').slider('value'), 10);
-				//form.find('output[for="rotation"]').val(temp);
-				temp2 = temp2 * Math.PI / 180;
-				console.log("rotation:"+temp2);
-				overlay2.setRotation(temp2);
-				overdo2.setRotation(temp2);
-
-				temp2 = {
-					'x' : Math.round(parseFloat(form2.find('[data-name="offset_x"]').slider('value')) * 100) / 100,
-					'y' : Math.round(parseFloat(form2.find('[data-name="offset_y"]').slider('value')) * 100) / 100
-				};
-				console.log("offset = X:"+temp2.x+",Y:"+temp2.y);
-				//form.find('output[for="offset_x"]').val(temp.x);
-				//form.find('output[for="offset_y"]').val(temp.y);
-				overlay2.setOffset(temp2);
-				overdo2.setOffset(temp2);
-			}
-		}; 
-
-		function showDefaultFeed() {
-			var currentHighlightedParticipantId = null;
-
-			// Remove the highlighting.
-			if (currentHighlightedParticipantId) {
-				gapi.hangout.av.clearAvatar(currentHighlightedParticipantId);
-			}
-
-			var feed = gapi.hangout.layout.getDefaultVideoFeed();
-			var canvas = gapi.hangout.layout.getVideoCanvas();
-
-			canvas.setVideoFeed(feed);
-			canvas.setWidth(600);
-			canvas.setPosition(300, 50);
-			canvas.setVisible(true);
-
-			// Update the text
-		}
-
-		//
-		/*$('#faceTypes button').on('click',function(){
-			//console.log(this.id);
-			facetype = this.value;
-			toggle_texture();
-		});
-		$('#textures button').on('click',function(){
-			//console.log(this.id);
-			facetexture = this.value;
-			toggle_texture();
-		});*/
-		/*$('#overlays button').on('click', function() {
-			toggle_display(this.id);
-			whatWeBeUsing = this.value;
-		});*/
-		//ask arran about changing the app format to a full app instead of side app. Add video etc. Makes shit easy.
-
-		/* $('button').button().draggable(
-		{
-		cancel:false,
-		revert:true,
-		containment:"document",
-		zIndex:99999,
-		helper:"clone"
-		}
-		); */
-
-		//$('#sdf').live("click", showDefaultFeed());
-		/*$('#position span[data-name]').each(function() {
-			console.log(this);
-			var el = $(this);
-			el.slider({
-				'value' : parseFloat(el.attr('data-value')),
-				'min' : parseFloat(el.attr('data-min')),
-				'max' : parseFloat(el.attr('data-max')),
-				'step' : parseFloat(el.attr('data-step')),
-				'slide' : apply_position_values
-			});
-		});*/
-
-		gapi.hangout.av.effects.onFaceTrackingDataChanged.add(displayPan);
-			gapi.hangout.onApiReady.add(function(eventObj) {
-				//load resources here.
-			try{
-				console.log("DOINGSHITINHERE");
-				for(var i in faceSkins){
-				
-					internalTexture[i] = {
-						'resource' : gapi.hangout.av.effects.createImageResource(faceSkins[i].url),
-						'overlay' : null
+				hair_cache,
+				refresh_specs;
+        
+            // Verify that both the type and the texture are of valid values
+            if ((type !== null) && !_.has(faces.definitions, type)) { throw new Error('Type invalid: ' + type); }
+            if (!_.contains(faces.definitions[type].textures, texture)) { throw new Error('Texture invalid: ' + texture + ' of type ' + type); }
+            
+            // FACE REMOVAL
+            // Only proceed with it if type is null and there is face visible
+            if ((type === null) && faces.current) {
+            
+                old_overlay.setVisible(false);
+                faces.current = null;
+                faces.changed.dispatch(null);
+            
+            // FACE DISPLAY / SWITCH
+            // Only proceed with it if etiher there is no face shown or
+            // a face shown is different from the one requested
+            } else if ((type !== null) && (!faces.current || _.difference(faces.current, [type, texture]).length)) {
+            
+                // Ensure the selected type/texture combination has
+                // been loaded - if it has not, load it
+                if (!_.has(faces.cache, type)) {
+                    faces.cache[type] = {};
+                    faces.cache[type][texture] = load_overlay(
+                        faces.path
+                            .replace('{type}', type)
+                            .replace('{texture}', texture),
+                        faces.definitions[type]
+                    );
+                } else if (!_.has(faces.cache[type], texture)) {
+                    faces.cache[type][texture] = load_overlay(
+                        faces.path
+                            .replace('{type}', type)
+                            .replace('{texture}', texture),
+                        faces.definitions[type]
+                    );
+                }
+                
+                old_overlay = faces.current ? faces.cache[faces.current[0]][faces.current[1]].overlay : null;
+                new_overlay = faces.cache[type][texture].overlay;
+                hair_overlay = hair.current && hair.current[1] ? hair.cache[hair.current[0]][hair.current[1]].overlay : null;
+                
+                if (old_overlay) { old_overlay.setVisible(false); }
+				if (hair_overlay) {
+					refresh_specs = {
+						'scale': hair_overlay.getScale(),
+						'rotation': hair_overlay.getRotation(),
+						'offset': hair_overlay.getOffset()
 					};
-					
-				internalTexture[i].overlay = internalTexture[i].resource.createFaceTrackingOverlay({
-					'scale' : faceSkins[i].scale,
-					'rotation' : faceSkins[i].rotation,
-					'offset' : faceSkins[i].offset,
-					'scaleWithFace' : faceSkins[i].scaleWithFace,
-					'rotateWithFace' : faceSkins[i].rotateWithFace,
-					'trackingFeature' : faceSkins[i].trackingFeature
-				});
-					//faceSkins
-				internalTexture[i].overlay.setVisible(false); 
+					hair_overlay.setVisible(false);
+					hair_overlay.dispose();
+					hair_overlay = true;
+					hair_cache = hair.cache[hair.current[0]][hair.current[1]];
 				}
-				
-				for(var t in overlays){
-										
-				internals[t] = {
-					'resource' : gapi.hangout.av.effects.createImageResource(overlays[t].url),
-					'overlay' : null
-				};
+                //if (hair_overlay) { hair_overlay.setVisible(false); }
+                new_overlay.setVisible(true);
+				if (hair_overlay) {
+					hair_cache.overlay = hair_cache.resource.createFaceTrackingOverlay({
+						'scale' : refresh_specs.scale,
+						'rotation' : refresh_specs.rotation,
+						'offset' : refresh_specs.offset,
+						'scaleWithFace' : hair.definitions[hair.current[0]][hair.current[1]].scaleWithFace,
+						'rotateWithFace' : hair.definitions[hair.current[0]][hair.current[1]].rotateWithFace,
+						'trackingFeature' : hair.definitions[hair.current[0]][hair.current[1]].trackingFeature
+					});
+					hair_cache.overlay.setVisible(true);
+					hair.refreshed.dispatch();
+				}
+                //if (hair_overlay) { hair_overlay.setVisible(true); }
+                
+                faces.current = [type, texture];
+                faces.changed.dispatch(faces.current);
+            
+            }
+        
+        };
+        
+        hair.change = function (type, direction) {
+        
+            var new_overlay,
+                old_overlay = hair.current && hair.current[1] ? hair.cache[hair.current[0]][hair.current[1]].overlay : null;
+            
+            direction = direction || current_direction;
+            
+            // Verify that the parameters are of appropriate values
+            if ((type !== null) && !_.has(hair.definitions, type)) { throw new Error('Type invalid: ' + type); }
+            if ((direction !== null) && !_.has(hair.pan_ranges, direction)) { throw new Error('Direction invalid: ' + direction + ' of type ' + type); }
+            
+            // HAIR REMOVAL
+            // Only proceed if hair is already visible and
+            // type has been given as null.
+            if ((type === null) && hair.current) {
+            
+                if (old_overlay) { old_overlay.setVisible(false); }
+                hair.current = null;
+                hair.changed.dispatch(null);
+            
+            // HAIR ADDITION / SWITCH
+            // Only proceed with it if etiher there is no hair shown or
+            // hair shown is different from the one requested.
+            } else if ((type !== null) && (!hair.current || _.difference(hair.current, [type, direction]).length)) {
+            
+                if (direction !== null) {
+            
+                    // Ensure the selected type/direction combination has
+                    // been loaded - if it has not, load it
+                    if (!_.has(hair.cache, type)) {
+                        hair.cache[type] = {};
+                        hair.cache[type][direction] = load_overlay(
+                            hair.path
+                                .replace('{type}', type)
+                                .replace('{direction}', direction),
+                            hair.definitions[type][direction]
+                        );
+                    } else if (!_.has(hair.cache[type], direction)) {
+                        hair.cache[type][direction] = load_overlay(
+                            hair.path
+                                .replace('{type}', type)
+                                .replace('{direction}', direction),
+                            hair.definitions[type][direction]
+                        );
+                    }
+                    
+                    new_overlay = hair.cache[type][direction].overlay;
+					console.log('New overlay: ', new_overlay);
+                
+                }
+                
+                if (old_overlay) { old_overlay.setVisible(false); console.log('Disabling old overlay.'); }
+                if (new_overlay) { new_overlay.setVisible(true); console.log('Enabling new overlay.'); }
+                
+                hair.current = [type, direction];
+                hair.changed.dispatch(hair.current);
+            
+            }
+        
+        };
+        
+        gapi.hangout.av.effects.onFaceTrackingDataChanged.add(function (ev) {
+            var new_direction;
+            if (ev.hasFace) {
+            
+                new_direction = _.chain(direction_calc)
+                    .filter(function (item) { return (ev.pan >= item[1][0]) && (ev.pan <= item[1][1]); })
+                    .pluck(0)
+                    .first()
+                    .value() || null;
+                
+                if (new_direction !== current_direction) {
+                    current_direction = new_direction;
+                    if (hair.current) {
+                        hair.change(hair.current[0], new_direction);
+                    }
+                }
+            
+            }
+        });
+    
+    }());
+    
+    (function () {
+    
+        var tweak_face = {
+                'current_overlay': null,
+                'controls': {
+                    'scale': null,
+                    'rotation': null,
+                    'offset_x': null,
+                    'offset_y': null
+                }
+            },
+            tweak_hair = {
+                'current_overlay': null,
+                'controls': {
+                    'scale': null,
+                    'rotation': null,
+                    'offset_x': null,
+                    'offset_y': null
+                }
+            };
+        
+        $('input[type="range"]').replaceWith(function () {
+            var el = document.createElement('div');
+            el.className = 'range';
+            el.setAttribute('data-min', this.getAttribute('min'));
+            el.setAttribute('data-max', this.getAttribute('max'));
+            el.setAttribute('data-step', this.getAttribute('step'));
+            el.setAttribute('data-name', this.getAttribute('name'));
+            el.setAttribute('data-value', this.getAttribute('value'));
+            return el;
+        });
+        
+        _.each(['face', 'hair'], function (type) {
+        
+            var block = (type === 'face' ? tweak_face : tweak_hair);
+            $('.' + type + ' div.range').each(function () {
+            
+                var name = this.getAttribute('data-name'),
+					/* DEBUG */ span = $('> span', this.parentNode),
+                    temp = $(this).slider({
+                        'value': parseFloat(this.getAttribute('data-value')),
+                        'min': parseFloat(this.getAttribute('data-min')),
+                        'max': parseFloat(this.getAttribute('data-max')),
+                        'step': parseFloat(this.getAttribute('data-step')),
+                        'slide': (function () {
+                            var result;
+                            switch (name) {
+                            
+                            case 'scale':
+                                result = function (ev, data) {
+                                    if (block.current_overlay) {
+                                        block.current_overlay.setScale(parseFloat(data.value));
+										/* DEBUG */ span.text(parseFloat(data.value));
+                                    }
+                                };
+                                break;
+                            case 'rotation':
+                                result = function (ev, data) {
+                                    if (block.current_overlay) {
+                                        block.current_overlay.setRotation(parseFloat(data.value) * Math.PI / 180);
+										/* DEBUG */ span.text(parseFloat(data.value));
+                                    }
+                                };
+                                break;
+                            case 'offset_x':
+                                result = function (ev, data) {
+                                    if (block.current_overlay) {
+                                        block.current_overlay.setOffset(
+                                            parseFloat(data.value),
+                                            block.current_overlay.getOffset().y
+                                        );
+										/* DEBUG */ span.text(parseFloat(data.value));
+                                    }
+                                };
+                                break;
+                            case 'offset_y':
+                                result = function (ev, data) {
+                                    if (block.current_overlay) {
+                                        block.current_overlay.setOffset(
+                                            block.current_overlay.getOffset().x,
+                                            parseFloat(data.value)
+                                        );
+										/* DEBUG */ span.text(parseFloat(data.value));
+                                    }
+                                };
+                                break;
+                            
+                            }
+                            return result;
+                        }())
+                    });
+                block.controls[name] = temp;
+            
+            });
+        
+        });
+        
+        faces.changed.add(function (current) {
+        
+            var overlay;
+        
+            if (!current) {
+                tweak_face.current_overlay = null;
+                _.each(tweak_face.controls, function (item) {
+                    item.slider('value', item.attr('data-value'));
+                });
+            } else {
+                overlay = tweak_face.current_overlay = faces.cache[current[0]][current[1]].overlay;
+                tweak_face.controls.scale.slider('value', overlay.getScale());
+                tweak_face.controls.rotation.slider('value', overlay.getRotation() * 180 / Math.PI);
+                tweak_face.controls.offset_x.slider('value', overlay.getOffset().x);
+                tweak_face.controls.offset_y.slider('value', overlay.getOffset().y);
+            }
+        
+        });
+        
+        hair.changed.add(function (current) {
+        
+            var overlay;
+        
+            if (!current) {
+                tweak_hair.current_overlay = null;
+                _.each(tweak_hair.controls, function (item) {
+                    item.slider('value', item.attr('data-value'));
+                });
+            } else if (current[1]) {
+                overlay = tweak_hair.current_overlay = hair.cache[current[0]][current[1]].overlay;
+                tweak_hair.controls.scale.slider('value', overlay.getScale());
+                tweak_hair.controls.rotation.slider('value', overlay.getRotation() * 180 / Math.PI);
+                tweak_hair.controls.offset_x.slider('value', overlay.getOffset().x);
+                tweak_hair.controls.offset_y.slider('value', overlay.getOffset().y);
+            }
+        
+        });
+		
+		hair.refreshed.add(function () {
+			tweak_hair.current_overlay = hair.cache[hair.current[0]][hair.current[1]].overlay;
+		});
+    
+    }());
+	
+	$('#faces button')
+		.filter('[name="face"]').on('click', function (ev) {
+		
+			ev.preventDefault();
+			if (faces.current && (faces.current[0] === this.value)) {
+				faces.change(null);
+			} else if (faces.current) {
+				faces.change(this.value, faces.current[1]);
+			} else {
+				faces.change(this.value, 'polka');
+			}
+		
+		}).end()
+		.filter('[name="texture"]').on('click', function (ev) {
+		
+			ev.preventDefault();
+			if (faces.current && faces.current[1] !== this.value) {
+				faces.change(faces.current[0], this.value);
+			}
+		
+		}).end()
+		.filter('[name="hair"]').on('click', function (ev) {
+		
+			ev.preventDefault();
+			if (hair.current && (hair.current[0] === this.value)) {
+				hair.change(null);
+			} else {
+				hair.change(this.value);
+			}
+		
+		}).end();
+	
+	$('.tabs').tabs();
 
-//console.log(internals[t]);
-			/*	internals[t].overlay = internals[t].resource.createFaceTrackingOverlay({
-					'scale' : overlays[t].scale,
-					'rotation' : overlays[t].rotation,
-					'offset' : overlays[t].offset,
-					'scaleWithFace' : overlays[t].scaleWithFace,
-					'rotateWithFace' : overlays[t].rotateWithFace,
-					'trackingFeature' : overlays[t].trackingFeature
-			}); 
-				//selected = type;
-				internals[t].overlay.setVisible(false); */
-				
-				}
-				console.log(internalTexture);
-				console.log(internals);				
-		} catch(e){console.log(e);}
-				//console.log(internalTexture);
-			});
-	}()); 
+}/*()*/);
