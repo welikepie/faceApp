@@ -1,19 +1,38 @@
 /*jshint forin:true, noarg:true, noempty:true, eqeqeq:true, bitwise:true, strict:true, undef:true, unused:true, curly:true, browser:true, indent:4, maxerr:50 */
 /*global $:true, _:true, gapi:true, signals:true */
 
+/* ! NOTE
+ * The entire initialisation procedure is wrapped as callback to onApiReady
+ * to ensure the all the scripts will run once the entire Google Hangouts API
+ * has been successfully loaded. Additionally, Hangouts will automatically keep
+ * the app dimmed until the init function resolves.
+ */
 gapi.hangout.onApiReady.add(function () {
     "use strict";
 
+        /* Base URL is extracted from HTML file to limit
+         * the number of changes to URLs one has to make while
+         * deploying the app to different server (absolute URLs
+         * are required).
+         */
     var base_url = $('head > base').prop('href') || '',
     
+        /* This namespace holds all the details regarding the face overlays,
+         * including the definitions for all face types and their corresponing
+         * textures.
+         */
         faces = {
         
-            'path': base_url + 'images/textures/{type}-{texture}.png',
-            'current': null,
-            'cache': {},
+            'path': base_url + 'images/textures/{type}-{texture}.png', // Template for image URLs
+            'current': null,  // Null if no face was selected, array of [type, texture] otherwise
+            'cache': {},      // Object used to hold loaded resources and initialised overlays
             
-            'change': null,
-            'changed': new signals.Signal(),
+            'change': null,   // Function called with (type {string|null}, texture {optional:string}
+                              // to change the face overlay (either show one, change it to a different
+                              // one or hide it). When called with type string, display or switch.
+                              // When called with null, hide.
+                              
+            'changed': new signals.Signal(),  // signal thrown whenever the face has been changed
             
             'definitions': {
                 'long': {
@@ -105,19 +124,29 @@ gapi.hangout.onApiReady.add(function () {
         
         },
         
+        /* Namespace used for managing the hair style overlay.
+         * Similar to face one, but with some changes to accommodate direction instead of texture.
+         */
         hair = {
         
             'path': base_url + 'images/hair/{type}-{direction}.png',
+            
+            // Pan ranges specify which direction applies for
+            // which pan value ranges. Direction becomes null if
+            // current pan value does not fit any range.
             'pan_ranges': {
                 'left': [-180, -15],
                 'right': [15, 180]
             },
-            'current': null,
+            'current': null, // Null if nothing displayed, array of [type, direction] otherwise.
+                             // Direction can be null (nothing will display), but it still indicates
+                             // an overlay to display.
             'cache': {},
             
             'change': null,
-            'changed': new signals.Signal(),
-			'refreshed': new signals.Signal(),
+            'changed': new signals.Signal(),    // Thrown when the hair style overlay was changed
+            'refreshed': new signals.Signal(),  // Thrown when the hair style overlay was reinitialised;
+                                                // This is to accommodate the enforcement of order (hair on top)
             
             'definitions': {
                 'badfx': {
@@ -220,10 +249,14 @@ gapi.hangout.onApiReady.add(function () {
         
         };
     
+    /* Within this scope, the face and hair change functions are defined,
+     * along with the event handler for face tracking data, responsible for
+     * adjusting the direction parameter for overlays.
+     */
     (function () {
     
-        var current_direction = 'right',
-            direction_calc = _.chain(hair.pan_ranges)
+        var current_direction = 'right',               // Last detected direction
+            direction_calc = _.chain(hair.pan_ranges)  // Pan ranges after doing some pre-processing (easier calculations)
                 .pairs()
                 .map(function (item) {
                     return [
@@ -232,6 +265,9 @@ gapi.hangout.onApiReady.add(function () {
                     ];
                 }),
         
+            /* This function takes care of loading the image resources and creating the
+             * overlay the first time an  overlay of particular type is requested.
+             */
             load_overlay = function (url, specs) {
             
                 var resource,
@@ -260,9 +296,9 @@ gapi.hangout.onApiReady.add(function () {
             var new_overlay,
                 old_overlay = faces.current ? faces.cache[faces.current[0]][faces.current[1]].overlay : null,
                 hair_overlay = hair.current && hair.current[1] ? hair.cache[hair.current[0]][hair.current[1]].overlay : null,
-				
-				hair_cache,
-				refresh_specs;
+                
+                hair_cache,
+                overlay_specs;
         
             // Verify that both the type and the texture are of valid values
             if ((type !== null) && !_.has(faces.definitions, type)) { throw new Error('Type invalid: ' + type); }
@@ -281,8 +317,10 @@ gapi.hangout.onApiReady.add(function () {
             // a face shown is different from the one requested
             } else if ((type !== null) && (!faces.current || _.difference(faces.current, [type, texture]).length)) {
             
-                // Ensure the selected type/texture combination has
-                // been loaded - if it has not, load it
+                // Ensure the requested face/texture combo has been loaded.
+                // Load it if it's missing. Also, as different overlays for same
+                // face type, but different textures are to be managed together,
+                // make it inherit properties from one alredy established if possible
                 if (!_.has(faces.cache, type)) {
                     faces.cache[type] = {};
                     faces.cache[type][texture] = load_overlay(
@@ -296,7 +334,22 @@ gapi.hangout.onApiReady.add(function () {
                         faces.path
                             .replace('{type}', type)
                             .replace('{texture}', texture),
-                        faces.definitions[type]
+                        (function () {
+                        
+                            var first_overlay = _.chain(faces.cache[type])
+                                .values().first()
+                                .value().overlay;
+                            
+                            return _.chain(faces.definitions[type])
+                                .omit('textures')
+                                .extend({
+                                    'scale': first_overlay.getScale(),
+                                    'rotation': first_overlay.getRotation(),
+                                    'offset': first_overlay.getOffset()
+                                })
+                                .value();
+                        
+                        }())
                     );
                 }
                 
@@ -305,32 +358,30 @@ gapi.hangout.onApiReady.add(function () {
                 hair_overlay = hair.current && hair.current[1] ? hair.cache[hair.current[0]][hair.current[1]].overlay : null;
                 
                 if (old_overlay) { old_overlay.setVisible(false); }
-				if (hair_overlay) {
-					refresh_specs = {
-						'scale': hair_overlay.getScale(),
-						'rotation': hair_overlay.getRotation(),
-						'offset': hair_overlay.getOffset()
-					};
-					hair_overlay.setVisible(false);
-					hair_overlay.dispose();
-					hair_overlay = true;
-					hair_cache = hair.cache[hair.current[0]][hair.current[1]];
-				}
-                //if (hair_overlay) { hair_overlay.setVisible(false); }
+                if (hair_overlay) {
+                    overlay_specs = {
+                        'scale': hair_overlay.getScale(),
+                        'rotation': hair_overlay.getRotation(),
+                        'offset': hair_overlay.getOffset()
+                    };
+                    hair_overlay.setVisible(false);
+                    hair_overlay.dispose();
+                    hair_overlay = true;
+                    hair_cache = hair.cache[hair.current[0]][hair.current[1]];
+                }
                 new_overlay.setVisible(true);
-				if (hair_overlay) {
-					hair_cache.overlay = hair_cache.resource.createFaceTrackingOverlay({
-						'scale' : refresh_specs.scale,
-						'rotation' : refresh_specs.rotation,
-						'offset' : refresh_specs.offset,
-						'scaleWithFace' : hair.definitions[hair.current[0]][hair.current[1]].scaleWithFace,
-						'rotateWithFace' : hair.definitions[hair.current[0]][hair.current[1]].rotateWithFace,
-						'trackingFeature' : hair.definitions[hair.current[0]][hair.current[1]].trackingFeature
-					});
-					hair_cache.overlay.setVisible(true);
-					hair.refreshed.dispatch();
-				}
-                //if (hair_overlay) { hair_overlay.setVisible(true); }
+                if (hair_overlay) {
+                    hair_cache.overlay = hair_cache.resource.createFaceTrackingOverlay({
+                        'scale' : overlay_specs.scale,
+                        'rotation' : overlay_specs.rotation,
+                        'offset' : overlay_specs.offset,
+                        'scaleWithFace' : hair.definitions[hair.current[0]][hair.current[1]].scaleWithFace,
+                        'rotateWithFace' : hair.definitions[hair.current[0]][hair.current[1]].rotateWithFace,
+                        'trackingFeature' : hair.definitions[hair.current[0]][hair.current[1]].trackingFeature
+                    });
+                    hair_cache.overlay.setVisible(true);
+                    hair.refreshed.dispatch();
+                }
                 
                 faces.current = [type, texture];
                 faces.changed.dispatch(faces.current);
@@ -386,12 +437,11 @@ gapi.hangout.onApiReady.add(function () {
                     }
                     
                     new_overlay = hair.cache[type][direction].overlay;
-					console.log('New overlay: ', new_overlay);
                 
                 }
                 
-                if (old_overlay) { old_overlay.setVisible(false); console.log('Disabling old overlay.'); }
-                if (new_overlay) { new_overlay.setVisible(true); console.log('Enabling new overlay.'); }
+                if (old_overlay) { old_overlay.setVisible(false); }
+                if (new_overlay) { new_overlay.setVisible(true); }
                 
                 hair.current = [type, direction];
                 hair.changed.dispatch(hair.current);
@@ -460,7 +510,7 @@ gapi.hangout.onApiReady.add(function () {
             $('.' + type + ' div.range').each(function () {
             
                 var name = this.getAttribute('data-name'),
-					/* DEBUG */ span = $('> span', this.parentNode),
+                    /* DEBUG */ span = $('> span', this.parentNode),
                     temp = $(this).slider({
                         'value': parseFloat(this.getAttribute('data-value')),
                         'min': parseFloat(this.getAttribute('data-min')),
@@ -473,38 +523,70 @@ gapi.hangout.onApiReady.add(function () {
                             case 'scale':
                                 result = function (ev, data) {
                                     if (block.current_overlay) {
-                                        block.current_overlay.setScale(parseFloat(data.value));
-										/* DEBUG */ span.text(parseFloat(data.value));
+                                        if (type === 'face') {
+                                            _.chain(faces.cache[faces.current[0]])
+                                            .pluck('overlay')
+                                            .invoke('setScale', parseFloat(data.value));
+                                        } else {
+                                            block.current_overlay.setScale(parseFloat(data.value));
+                                        }
+                                        /* DEBUG */ span.text(parseFloat(data.value));
                                     }
                                 };
                                 break;
                             case 'rotation':
                                 result = function (ev, data) {
                                     if (block.current_overlay) {
-                                        block.current_overlay.setRotation(parseFloat(data.value) * Math.PI / 180);
-										/* DEBUG */ span.text(parseFloat(data.value));
+                                        if (type === 'face') { 
+                                            _.chain(faces.cache[faces.current[0]])
+                                            .pluck('overlay')
+                                            .invoke('setRotation', parseFloat(data.value) * Math.PI / 180);
+                                        } else {
+                                            block.current_overlay.setRotation(parseFloat(data.value) * Math.PI / 180);
+                                        }
+                                        /* DEBUG */ span.text(parseFloat(data.value));
                                     }
                                 };
                                 break;
                             case 'offset_x':
                                 result = function (ev, data) {
                                     if (block.current_overlay) {
-                                        block.current_overlay.setOffset(
-                                            parseFloat(data.value),
-                                            block.current_overlay.getOffset().y
-                                        );
-										/* DEBUG */ span.text(parseFloat(data.value));
+                                        if (type === 'face') { 
+                                            _.chain(faces.cache[faces.current[0]])
+                                            .pluck('overlay')
+                                            .invoke(
+                                                'setOffset',
+                                                parseFloat(data.value),
+                                                block.current_overlay.getOffset().y
+                                            );
+                                        } else {
+                                            block.current_overlay.setOffset(
+                                                parseFloat(data.value),
+                                                block.current_overlay.getOffset().y
+                                            );
+                                        }
+                                        /* DEBUG */ span.text(parseFloat(data.value));
                                     }
                                 };
                                 break;
                             case 'offset_y':
                                 result = function (ev, data) {
                                     if (block.current_overlay) {
-                                        block.current_overlay.setOffset(
-                                            block.current_overlay.getOffset().x,
-                                            parseFloat(data.value)
-                                        );
-										/* DEBUG */ span.text(parseFloat(data.value));
+                                        if (type === 'face') { 
+                                            _.chain(faces.cache[faces.current[0]])
+                                            .pluck('overlay')
+                                            .invoke(
+                                                'setOffset',
+                                                block.current_overlay.getOffset().x,
+                                                parseFloat(data.value)
+                                            );
+                                        } else {
+                                            block.current_overlay.setOffset(
+                                                block.current_overlay.getOffset().x,
+                                                parseFloat(data.value)
+                                            );
+                                        }
+                                        /* DEBUG */ span.text(parseFloat(data.value));
                                     }
                                 };
                                 break;
@@ -556,45 +638,45 @@ gapi.hangout.onApiReady.add(function () {
             }
         
         });
-		
-		hair.refreshed.add(function () {
-			tweak_hair.current_overlay = hair.cache[hair.current[0]][hair.current[1]].overlay;
-		});
+        
+        hair.refreshed.add(function () {
+            tweak_hair.current_overlay = hair.cache[hair.current[0]][hair.current[1]].overlay;
+        });
     
     }());
-	
-	$('#faces button')
-		.filter('[name="face"]').on('click', function (ev) {
-		
-			ev.preventDefault();
-			if (faces.current && (faces.current[0] === this.value)) {
-				faces.change(null);
-			} else if (faces.current) {
-				faces.change(this.value, faces.current[1]);
-			} else {
-				faces.change(this.value, 'polka');
-			}
-		
-		}).end()
-		.filter('[name="texture"]').on('click', function (ev) {
-		
-			ev.preventDefault();
-			if (faces.current && faces.current[1] !== this.value) {
-				faces.change(faces.current[0], this.value);
-			}
-		
-		}).end()
-		.filter('[name="hair"]').on('click', function (ev) {
-		
-			ev.preventDefault();
-			if (hair.current && (hair.current[0] === this.value)) {
-				hair.change(null);
-			} else {
-				hair.change(this.value);
-			}
-		
-		}).end();
-	
-	$('.tabs').tabs();
+    
+    $('#faces button')
+        .filter('[name="face"]').on('click', function (ev) {
+        
+            ev.preventDefault();
+            if (faces.current && (faces.current[0] === this.value)) {
+                faces.change(null);
+            } else if (faces.current) {
+                faces.change(this.value, faces.current[1]);
+            } else {
+                faces.change(this.value, 'polka');
+            }
+        
+        }).end()
+        .filter('[name="texture"]').on('click', function (ev) {
+        
+            ev.preventDefault();
+            if (faces.current && faces.current[1] !== this.value) {
+                faces.change(faces.current[0], this.value);
+            }
+        
+        }).end()
+        .filter('[name="hair"]').on('click', function (ev) {
+        
+            ev.preventDefault();
+            if (hair.current && (hair.current[0] === this.value)) {
+                hair.change(null);
+            } else {
+                hair.change(this.value);
+            }
+        
+        }).end();
+    
+    $('.tabs').tabs();
 
 }/*()*/);
