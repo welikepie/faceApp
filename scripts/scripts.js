@@ -47,7 +47,7 @@ gapi.hangout.onApiReady.add(function () {
                         'x' : 0,
                         'y' : 0.08
                     },
-                    'scale' : 1.05,
+                    'scale' : 1.01,
                     'rotation' : 0,
                     'scaleWithFace' : true,
                     'rotateWithFace' : true
@@ -62,7 +62,7 @@ gapi.hangout.onApiReady.add(function () {
                     'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                     'offset' : {
                         'x' : 0,
-                        'y' : 0.11
+                        'y' : 0.09
                     },
                     'scale' : 1.1,
                     'rotation' : 0,
@@ -96,7 +96,7 @@ gapi.hangout.onApiReady.add(function () {
                     'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                     'offset' : {
                         'x' : 0,
-                        'y' : 0.09
+                        'y' : 0.1
                     },
                     'scale' : 1.03,
                     'rotation' : 0,
@@ -115,7 +115,7 @@ gapi.hangout.onApiReady.add(function () {
                         'x' : 0,
                         'y' : 0.09
                     },
-                    'scale' : 1.17,
+                    'scale' : 1.16,
                     'rotation' : 0,
                     'scaleWithFace' : true,
                     'rotateWithFace' : true
@@ -201,22 +201,22 @@ gapi.hangout.onApiReady.add(function () {
                     'left': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0.4,
-                            'y' : -0.44
+                            'x' : 0.37,
+                            'y' : -0.42
                         },
-                        'scale' : 0.68,
-                        'rotation' : (-18 * Math.PI / 180),
+                        'scale' : 0.7,
+                        'rotation' : (-13 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     },
                     'right': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : -0.4,
-                            'y' : -0.44
+                            'x' : -0.37,
+                            'y' : -0.42
                         },
-                        'scale' : 0.68,
-                        'rotation' : (18 * Math.PI / 180),
+                        'scale' : 0.7,
+                        'rotation' : (13 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     }
@@ -225,22 +225,22 @@ gapi.hangout.onApiReady.add(function () {
                     'left': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0.24,
-                            'y' : -0.3
+                            'x' : 0.21,
+                            'y' : -0.275
                         },
                         'scale' : 0.73,
-                        'rotation' : (-15 * Math.PI / 180),
+                        'rotation' : (-11 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     },
                     'right': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : -0.24,
-                            'y' : -0.3
+                            'x' : -0.21,
+                            'y' : -0.275
                         },
                         'scale' : 0.73,
-                        'rotation' : (15 * Math.PI / 180),
+                        'rotation' : (11 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     }
