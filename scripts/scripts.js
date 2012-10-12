@@ -45,9 +45,9 @@ gapi.hangout.onApiReady.add(function () {
                     'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                     'offset' : {
                         'x' : 0,
-                        'y' : 0
+                        'y' : 0.08
                     },
-                    'scale' : 0.95,
+                    'scale' : 1.05,
                     'rotation' : 0,
                     'scaleWithFace' : true,
                     'rotateWithFace' : true
@@ -62,9 +62,9 @@ gapi.hangout.onApiReady.add(function () {
                     'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                     'offset' : {
                         'x' : 0,
-                        'y' : 0
+                        'y' : 0.11
                     },
-                    'scale' : 0.95,
+                    'scale' : 1.1,
                     'rotation' : 0,
                     'scaleWithFace' : true,
                     'rotateWithFace' : true
@@ -79,9 +79,9 @@ gapi.hangout.onApiReady.add(function () {
                     'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                     'offset' : {
                         'x' : 0,
-                        'y' : 0
+                        'y' : 0.12
                     },
-                    'scale' : 0.95,
+                    'scale' : 1.09,
                     'rotation' : 0,
                     'scaleWithFace' : true,
                     'rotateWithFace' : true
@@ -96,9 +96,9 @@ gapi.hangout.onApiReady.add(function () {
                     'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                     'offset' : {
                         'x' : 0,
-                        'y' : 0
+                        'y' : 0.09
                     },
-                    'scale' : 0.95,
+                    'scale' : 1.03,
                     'rotation' : 0,
                     'scaleWithFace' : true,
                     'rotateWithFace' : true
@@ -113,9 +113,9 @@ gapi.hangout.onApiReady.add(function () {
                     'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                     'offset' : {
                         'x' : 0,
-                        'y' : 0
+                        'y' : 0.09
                     },
-                    'scale' : 0.95,
+                    'scale' : 1.17,
                     'rotation' : 0,
                     'scaleWithFace' : true,
                     'rotateWithFace' : true
@@ -153,22 +153,22 @@ gapi.hangout.onApiReady.add(function () {
                     'left': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0,
-                            'y' : 0
+                            'x' : 0.34,
+                            'y' : -0.46
                         },
-                        'scale' : 0.95,
-                        'rotation' : 0,
+                        'scale' : 0.71,
+                        'rotation' : (-11 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     },
                     'right': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0,
-                            'y' : 0
+                            'x' : -0.34,
+                            'y' : -0.46
                         },
-                        'scale' : 0.95,
-                        'rotation' : 0,
+                        'scale' : 0.71,
+                        'rotation' : (11 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     }
@@ -177,22 +177,22 @@ gapi.hangout.onApiReady.add(function () {
                     'left': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0,
-                            'y' : 0
+                            'x' : 0.47,
+                            'y' : -0.58
                         },
-                        'scale' : 0.95,
-                        'rotation' : 0,
+                        'scale' : 0.81,
+                        'rotation' : (-45 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     },
                     'right': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0,
-                            'y' : 0
+                            'x' : -0.47,
+                            'y' : -0.58
                         },
-                        'scale' : 0.95,
-                        'rotation' : 0,
+                        'scale' : 0.81,
+                        'rotation' : (45 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     }
@@ -201,22 +201,22 @@ gapi.hangout.onApiReady.add(function () {
                     'left': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0,
-                            'y' : 0
+                            'x' : 0.4,
+                            'y' : -0.44
                         },
-                        'scale' : 0.95,
-                        'rotation' : 0,
+                        'scale' : 0.68,
+                        'rotation' : (-18 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     },
                     'right': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0,
-                            'y' : 0
+                            'x' : -0.4,
+                            'y' : -0.44
                         },
-                        'scale' : 0.95,
-                        'rotation' : 0,
+                        'scale' : 0.68,
+                        'rotation' : (18 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     }
@@ -225,22 +225,22 @@ gapi.hangout.onApiReady.add(function () {
                     'left': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0,
-                            'y' : 0
+                            'x' : 0.24,
+                            'y' : -0.3
                         },
-                        'scale' : 0.95,
-                        'rotation' : 0,
+                        'scale' : 0.73,
+                        'rotation' : (-15 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     },
                     'right': {
                         'trackingFeature' : gapi.hangout.av.effects.FaceTrackingFeature.NOSE_ROOT,
                         'offset' : {
-                            'x' : 0,
-                            'y' : 0
+                            'x' : -0.24,
+                            'y' : -0.3
                         },
-                        'scale' : 0.95,
-                        'rotation' : 0,
+                        'scale' : 0.73,
+                        'rotation' : (15 * Math.PI / 180),
                         'scaleWithFace' : true,
                         'rotateWithFace' : true
                     }
@@ -272,6 +272,7 @@ gapi.hangout.onApiReady.add(function () {
             
                 var resource,
                     overlay;
+
                 
                 resource = gapi.hangout.av.effects.createImageResource(url);
                 overlay = resource.createFaceTrackingOverlay({
@@ -302,7 +303,7 @@ gapi.hangout.onApiReady.add(function () {
         
             // Verify that both the type and the texture are of valid values
             if ((type !== null) && !_.has(faces.definitions, type)) { throw new Error('Type invalid: ' + type); }
-            if (!_.contains(faces.definitions[type].textures, texture)) { throw new Error('Texture invalid: ' + texture + ' of type ' + type); }
+            if ((type !== null) && !_.contains(faces.definitions[type].textures, texture)) { throw new Error('Texture invalid: ' + texture + ' of type ' + type); }
             
             // FACE REMOVAL
             // Only proceed with it if type is null and there is face visible
@@ -510,7 +511,7 @@ gapi.hangout.onApiReady.add(function () {
             $('.' + type + ' div.range').each(function () {
             
                 var name = this.getAttribute('data-name'),
-                    /* DEBUG */ span = $('> span', this.parentNode),
+                    // DEBUG span = $('> span', this.parentNode),
                     temp = $(this).slider({
                         'value': parseFloat(this.getAttribute('data-value')),
                         'min': parseFloat(this.getAttribute('data-min')),
@@ -530,7 +531,7 @@ gapi.hangout.onApiReady.add(function () {
                                         } else {
                                             block.current_overlay.setScale(parseFloat(data.value));
                                         }
-                                        /* DEBUG */ span.text(parseFloat(data.value));
+                                        // DEBUG span.text(parseFloat(data.value));
                                     }
                                 };
                                 break;
@@ -544,7 +545,7 @@ gapi.hangout.onApiReady.add(function () {
                                         } else {
                                             block.current_overlay.setRotation(parseFloat(data.value) * Math.PI / 180);
                                         }
-                                        /* DEBUG */ span.text(parseFloat(data.value));
+                                        // DEBUG span.text(parseFloat(data.value));
                                     }
                                 };
                                 break;
@@ -565,7 +566,7 @@ gapi.hangout.onApiReady.add(function () {
                                                 block.current_overlay.getOffset().y
                                             );
                                         }
-                                        /* DEBUG */ span.text(parseFloat(data.value));
+                                        // DEBUG span.text(parseFloat(data.value));
                                     }
                                 };
                                 break;
@@ -586,7 +587,7 @@ gapi.hangout.onApiReady.add(function () {
                                                 parseFloat(data.value)
                                             );
                                         }
-                                        /* DEBUG */ span.text(parseFloat(data.value));
+                                        // DEBUG span.text(parseFloat(data.value));
                                     }
                                 };
                                 break;
