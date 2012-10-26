@@ -247,7 +247,15 @@ gapi.hangout.onApiReady.add(function () {
                 }
             }
         
-        };
+        },
+		
+		sounds = {
+			'path': 'http://dev.welikepie.com/candyApp/sounds/{id}.wav',
+			'cache': {},
+			
+			'play': null,
+			'played': new signals.Signal()
+		};
     
     /* Within this scope, the face and hair change functions are defined,
      * along with the event handler for face tracking data, responsible for
@@ -645,8 +653,85 @@ gapi.hangout.onApiReady.add(function () {
         });
     
     }());
+	
+	(function () {
+	
+		var load_sound = function (url) {
+		
+			var resource = gapi.hangout.av.effects.createAudioResource(url),
+				sound = resource.createSound({
+					'localOnly': false,
+					'loop': false,
+					'volume': 0.6
+				});
+			
+			return {
+				'resource': resource,
+				'sound': sound
+			};
+		
+		};
+		
+		var interval;
+		
+		sounds.play = function (id) {
+		
+			// Check if ID is present in cache (loaded before).
+			// If not make sure to load the file first.
+			if (!_.has(sounds.cache, id)) {
+				sounds.cache[id] = load_sound(sounds.path.replace('{id}', id));
+			}
+			
+			if (sounds.cache[id].resource.getState() === gapi.hangout.av.effects.ResourceState.LOADED) {
+				console.log('Playing the sound immediately.');
+				sounds.cache[id].sound.play();
+				sounds.played.dispatch(id);
+			} else {
+				console.log('Scheduling play.');
+				sounds.cache[id].resource.onLoad.add(function () {
+					console.log('Playing the sound.');
+					sounds.cache[id].sound.play();
+					sounds.played.dispatch(id);
+				});
+				interval = setInterval(function () {
+					switch (sounds.cache[id].resource.getState()) {
+					
+						case gapi.hangout.av.effects.ResourceState.LOADING:
+							console.log('WAV status: LOADING');
+							break;
+						case gapi.hangout.av.effects.ResourceState.ERROR:
+							console.log('WAV status: ERROR');
+							clearInterval(interval);
+							break;
+						case gapi.hangout.av.effects.ResourceState.LOADED:
+							console.log('WAV status: LOADED');
+							clearInterval(interval);
+							break;
+						case gapi.hangout.av.effects.ResourceState.DISPOSED:
+							console.log('WAV status: DISPOSED');
+							clearInterval(interval);
+							break;
+					
+					};
+				}, 1000);
+			}
+		
+		};
+	
+	}());
     
     $('#faces button')
+		.filter('[name="sound"]').on('click', function (ev) {
+		
+			var $el = $(this), that = this;
+			ev.preventDefault();
+			
+			$el.addClass('loading');
+			sounds.played.addOnce(function () { $el.removeClass('loading'); });
+			
+			sounds.play(this.value);
+		
+		}).end()
         .filter('[name="face"]').on('click', function (ev) {
         
             ev.preventDefault();
