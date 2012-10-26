@@ -55,22 +55,19 @@ header{display:block;width:268px;margin:8px auto 16px;font-size:0;line-height:0;
 .tabs>section#faces>div{margin:0 0 4px;}
 .tabs>section#faces button{display:block;float:left;background-position:center center;background-repeat:no-repeat;text-indent:-99999px;}
 .tabs>section#faces [name="sound"]{float:none;width:100%;text-align:center;text-indent:0;}.tabs>section#faces [name="sound"].loading{position:relative;}.tabs>section#faces [name="sound"].loading:after{content:'';width:16px;height:100%;position:absolute;top:0;right:4px;background:url('../images/ajax-loader.gif') no-repeat center center;}
-.tabs>section#faces [name="face"]{width:48px;height:48px;}.tabs>section#faces [name="face"]+[name="face"]{margin-left:7px;}
-.tabs>section#faces [name="face"][value="long"]{background-image:url('../images/faces/long-thumb.png');}
-.tabs>section#faces [name="face"][value="oval"]{background-image:url('../images/faces/oval-thumb.png');}
-.tabs>section#faces [name="face"][value="round"]{background-image:url('../images/faces/round-thumb.png');}
-.tabs>section#faces [name="face"][value="square"]{background-image:url('../images/faces/square-thumb.png');}
-.tabs>section#faces [name="face"][value="triangle"]{background-image:url('../images/faces/triangle-thumb.png');}
-.tabs>section#faces [name="texture"]{width:64px;height:64px;}.tabs>section#faces [name="texture"]+[name="texture"]{margin-left:4px;}
-.tabs>section#faces [name="texture"][value="silver"]{background-image:url('../images/textures/silver-thumb.png');}
-.tabs>section#faces [name="texture"][value="badfx"]{background-image:url('../images/textures/badfx-thumb.png');}
-.tabs>section#faces [name="texture"][value="gold"]{background-image:url('../images/textures/gold-thumb.png');}
-.tabs>section#faces [name="texture"][value="polka"]{background-image:url('../images/textures/polka-thumb.png');}
-.tabs>section#faces [name="hair"]{width:64px;height:64px;}.tabs>section#faces [name="hair"]+[name="hair"]{margin-left:4px;}
-.tabs>section#faces [name="hair"][value="turf"]{background-image:url('../images/hair/turf-thumb.png');}
-.tabs>section#faces [name="hair"][value="badfx"]{background-image:url('../images/hair/badfx-thumb.png');}
-.tabs>section#faces [name="hair"][value="gold"]{background-image:url('../images/hair/gold-thumb.png');}
-.tabs>section#faces [name="hair"][value="polka"]{background-image:url('../images/hair/polka-thumb.png');}
+.tabs>section#faces [name="face"]{width:84px;height:84px;}.tabs>section#faces [name="face"]+[name="face"]{margin-left:8px;}
+.tabs>section#faces [name="face"][value="polka"]{background-image:url('../images/thumbnails/polka.png');}
+.tabs>section#faces [name="face"][value="stone"]{background-image:url('../images/thumbnails/stone.png');}
+.tabs>section#faces [name="face"][value="gold"]{background-image:url('../images/thumbnails/gold.png');}
+.tabs>section#faces [name="piece"]{width:30px;height:30px;}.tabs>section#faces [name="piece"]+[name="piece"]{margin-left:4px;}
+.tabs>section#faces [name="piece"][value="1"]{background-image:url('../images/thumbnails/piece-1.png');}
+.tabs>section#faces [name="piece"][value="2"]{background-image:url('../images/thumbnails/piece-2.png');}
+.tabs>section#faces [name="piece"][value="3"]{background-image:url('../images/thumbnails/piece-3.png');}
+.tabs>section#faces [name="piece"][value="4"]{background-image:url('../images/thumbnails/piece-4.png');}
+.tabs>section#faces [name="piece"][value="5"]{background-image:url('../images/thumbnails/piece-5.png');}
+.tabs>section#faces [name="piece"][value="6"]{background-image:url('../images/thumbnails/piece-6.png');}
+.tabs>section#faces [name="piece"][value="7"]{background-image:url('../images/thumbnails/piece-7.png');}
+.tabs>section#faces [name="piece"][value="8"]{background-image:url('../images/thumbnails/piece-8.png');}
 .tabs>section#tweak .slider{display:block;overflow:hidden;}.tabs>section#tweak .slider+.slider{margin-top:4px;}
 .tabs>section#tweak .slider span{float:left;overflow:hidden;width:70px;}
 .tabs>section#tweak input[type="range"],.tabs>section#tweak div.range{display:block;height:8px;margin:4px 0 4px 78px;}

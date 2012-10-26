@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Robbie Williams Candy App</title>
-		<!--<base href="https://dev.welikepie.com/~though30/welikepie.com/dev/williamsFace/">-->
+		<base href="https://raw.github.com/welikepie/faceApp/v2/">
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1">
 		<link rel="stylesheet" href="styles/style.css" type="text/css">
@@ -19,7 +19,6 @@
 					<ul>
 						<li><a href="#faces">Faces</a></li>
 						<li><a href="#tweak">Adjustments</a></li>
-						<!--<li><a href="#audio">Audio Clips</a></li>-->
 					</ul>
 					
 					<section id="faces">
@@ -29,25 +28,20 @@
 						</div>
 						<div>
 							<!--<h3>Face types</h3>-->
-							<button type="button" name="face" value="long" class="btn btn-inverse">Long</button>
-							<button type="button" name="face" value="oval" class="btn btn-inverse">Oval</button>
-							<button type="button" name="face" value="triangle" class="btn btn-inverse">Triangle</button>
-							<button type="button" name="face" value="square" class="btn btn-inverse">Square</button>
-							<button type="button" name="face" value="round" class="btn btn-inverse">Round</button>
+							<button type="button" name="face" value="polka" class="btn btn-inverse">Polka</button>
+							<button type="button" name="face" value="stone" class="btn btn-inverse">Stone</button>
+							<button type="button" name="face" value="gold" class="btn btn-inverse">Gold</button>
 						</div>
 						<div>
 							<!--<h3>Face patterns</h3>-->
-							<button type="button" name="texture" value="silver" class="btn btn-inverse">Silver</button>
-							<button type="button" name="texture" value="badfx" class="btn btn-inverse">Broken VGA</button>
-							<button type="button" name="texture" value="gold" class="btn btn-inverse">Gold</button>
-							<button type="button" name="texture" value="polka" class="btn btn-inverse">Polka</button>
-						</div>
-						<div>
-							<!--<h3>Hair styles</h3>-->
-							<button type="button" name="hair" value="turf" class="btn btn-inverse">Grassy Hair</button>
-							<button type="button" name="hair" value="badfx" class="btn btn-inverse">Broken VGA</button>
-							<button type="button" name="hair" value="gold" class="btn btn-inverse">Golden Hair</button>
-							<button type="button" name="hair" value="polka" class="btn btn-inverse">Polka Hair</button>
+							<button type="button" name="piece" value="1" class="btn btn-inverse">Piece #1</button>
+							<button type="button" name="piece" value="2" class="btn btn-inverse">Piece #2</button>
+							<button type="button" name="piece" value="3" class="btn btn-inverse">Piece #3</button>
+							<button type="button" name="piece" value="4" class="btn btn-inverse">Piece #4</button>
+							<button type="button" name="piece" value="5" class="btn btn-inverse">Piece #5</button>
+							<button type="button" name="piece" value="6" class="btn btn-inverse">Piece #6</button>
+							<button type="button" name="piece" value="7" class="btn btn-inverse">Piece #7</button>
+							<button type="button" name="piece" value="8" class="btn btn-inverse">Piece #8</button>
 						</div>
 					</section>
 					
@@ -56,25 +50,28 @@
 						<div class="face">
 							<h3>Mask</h3>
 							<div class="slider"><span>Scale:</span> <input type="range" name="scale" value="1" min="0" max="2" step="0.01"></div>
-							<div class="slider"><span>Rotation:</span> <input type="range" name="rotation" value="0" min="-180" max="180" step="1"></div>
 							<div class="slider"><span>Horizontal:</span> <input type="range" name="offset_x" value="0" min="-1" max="1" step="0.01"></div>
 							<div class="slider"><span>Vertical:</span> <input type="range" name="offset_y" value="0" min="-1" max="1" step="0.01"></div>
 						</div>
 						
-						<div class="hair">
-							<h3>Hair style</h3>
-							<div class="slider"><span>Scale:</span> <input type="range" name="scale" value="1" min="0" max="2" step="0.01"></div>
-							<div class="slider"><span>Rotation:</span> <input type="range" name="rotation" value="0" min="-180" max="180" step="1"></div>
-							<div class="slider"><span>Horizontal:</span> <input type="range" name="offset_x" value="0" min="-1" max="1" step="0.01"></div>
-							<div class="slider"><span>Vertical:</span> <input type="range" name="offset_y" value="0" min="-1" max="1" step="0.01"></div>
-						</div>
+						<table>
+							<tbody>
+								<tr>
+									<th>Scale:</th>
+									<td id="scale_output"></td>
+								</tr>
+								<tr>
+									<th>Offset X:</th>
+									<td id="offset_x_output"></td>
+								</tr>
+								<tr>
+									<th>Offset Y:</th>
+									<td id="offset_y_output"></td>
+								</tr>
+							</tbody>
+						</table>
 						
 					</section>
-					
-					<!--<section id="audio">
-						<h2>Audio clips</h2>
-						<p>Test.</p>
-					</section>-->
 				
 				</div>
 			</section>
