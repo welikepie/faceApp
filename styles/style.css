@@ -52,15 +52,14 @@ div.wrapper{width:300px;height:100%;margin:0 auto;overflow-x:hidden;overflow-y:s
 header{display:block;width:268px;margin:8px auto 16px;font-size:0;line-height:0;text-align:center;}header img{-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;}
 .tabs{display:block;width:268px;margin:0 auto 8px;padding:0;border:none !important;}.tabs ul li{font-size:12px;}
 .tabs>section{font-size:12px;padding:16px 0 !important;}.tabs>section>div{margin:0 0 16px;overflow:hidden;}
-.tabs>section#faces>div{margin:0 0 4px;}
+.tabs>section#faces>div{margin:0 0 4px;}.tabs>section#faces>div.offset{margin-right:-8px;}
 .tabs>section#faces button{display:block;float:left;background-position:center center;background-repeat:no-repeat;text-indent:-99999px;}
 .tabs>section#faces [name="sound"]{float:none;width:100%;text-align:center;text-indent:0;}.tabs>section#faces [name="sound"].loading{position:relative;}.tabs>section#faces [name="sound"].loading:after{content:'';width:16px;height:100%;position:absolute;top:0;right:4px;background:url('../images/ajax-loader.gif') no-repeat center center;}
 .tabs>section#faces [name="face"]{width:84px;height:84px;}.tabs>section#faces [name="face"]+[name="face"]{margin-left:8px;}
 .tabs>section#faces [name="face"][value="polka"]{background-image:url('../images/thumbnails/polka.png');}
 .tabs>section#faces [name="face"][value="stone"]{background-image:url('../images/thumbnails/stone.png');}
 .tabs>section#faces [name="face"][value="gold"]{background-image:url('../images/thumbnails/gold.png');}
-.tabs>section#faces [name="piece"]{width:30px;height:30px;}.tabs>section#faces [name="piece"]+[name="piece"]{margin-left:4px;}
-.tabs>section#faces [name="piece"][value="1"]{background-image:url('../images/thumbnails/piece-1.png');}
+.tabs>section#faces [name="piece"]{width:61px;height:61px;margin:0 8px 4px 0;}.tabs>section#faces [name="piece"][value="1"]{background-image:url('../images/thumbnails/piece-1.png');}
 .tabs>section#faces [name="piece"][value="2"]{background-image:url('../images/thumbnails/piece-2.png');}
 .tabs>section#faces [name="piece"][value="3"]{background-image:url('../images/thumbnails/piece-3.png');}
 .tabs>section#faces [name="piece"][value="4"]{background-image:url('../images/thumbnails/piece-4.png');}

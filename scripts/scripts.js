@@ -22,9 +22,9 @@ gapi.hangout.onApiReady.add(function () {
 			
 			'current': null,
 			
-			'scale': -0.29,
-			'offset_x': -0.09,
-			'offset_y': 0.34,
+			'scale': -0.33,
+			'offset_x': -0.06,
+			'offset_y': 0.40,
 		
 			'definitions': {
 				'polka': {
@@ -78,7 +78,7 @@ gapi.hangout.onApiReady.add(function () {
 	
 	face_sets.changeSet = function (name) {
 	
-		var i, callback, change_func;
+		var i, callback, change_func, temp;
 	
 		// Only proceed if the selected face set is different from current one
 		if (face_sets.definitions[name] !== face_sets.current) {
@@ -128,6 +128,11 @@ gapi.hangout.onApiReady.add(function () {
 				
 				};
 				for (i = 0; i < face_sets.definitions[name].range; i += 1) { callback(i); }
+				temp = [false, true, false, true, true, false, false, false];
+				if (face_sets.definitions[name].visibility.length > temp.length) {
+					for (i = 0; i < (face_sets.definitions[name].visibility.length - temp.length); i += 1) { temp.push(true); }
+				}
+				face_sets.definitions[name].visibility = temp;
 			
 			} else {
 				change_func();
@@ -151,9 +156,9 @@ gapi.hangout.onApiReady.add(function () {
 	
 	(function () {
 	
-		var scale_current = 1,
-			offset_x_current = 0,
-			offset_y_current = 0;
+		var scale_current = 1 + face_sets.scale,
+			offset_x_current = 0 + face_sets.offset_x,
+			offset_y_current = 0 + face_sets.offset_y;
 			
 		positioning.getScale = function () { return scale_current; };
 		positioning.getOffsetX = function () { return offset_x_current; };

@@ -50,7 +50,7 @@ header {
 		
 		&#faces {
 			
-			> div { margin: 0 0 (@base * 0.25); }
+			> div { margin: 0 0 (@base * 0.25); &.offset { margin-right: -8px; } }
 		
 			button {
 				display: block;
@@ -87,9 +87,9 @@ header {
 				&[value="gold"] { background-image: url('../images/thumbnails/gold.png'); }
 			}
 			[name="piece"] {
-				width: 30px;
-				height: 30px;
-				+ [name="piece"] { margin-left: 4px; }
+				width: 61px;
+				height: 61px;
+				margin: 0 8px 4px 0;
 				
 				&[value="1"] { background-image: url('../images/thumbnails/piece-1.png'); }
 				&[value="2"] { background-image: url('../images/thumbnails/piece-2.png'); }

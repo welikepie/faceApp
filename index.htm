@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Robbie Williams Candy App</title>
-		<base href="https://raw.github.com/welikepie/faceApp/v2/">
+		<!--<base href="https://raw.github.com/welikepie/faceApp/v2/">-->
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1">
 		<link rel="stylesheet" href="styles/style.css" type="text/css">
@@ -24,24 +24,24 @@
 					<section id="faces">
 						<div>
 							<!--<h3>Sounds</h3>-->
-							<button type="button" name="sound" value="candy" class="btn btn-inverse"><i>Candy</i> Sample</button>
+							<button type="button" name="sound" value="candy" class="btn btn-inverse" title="Click here to play sample of Robbie Williams' latest single"><i>Candy</i> Sample</button>
 						</div>
 						<div>
 							<!--<h3>Face types</h3>-->
-							<button type="button" name="face" value="polka" class="btn btn-inverse">Polka</button>
-							<button type="button" name="face" value="stone" class="btn btn-inverse">Stone</button>
-							<button type="button" name="face" value="gold" class="btn btn-inverse">Gold</button>
+							<button type="button" name="face" value="polka" class="btn btn-inverse" title="Click here to make a polka-dotted face appear">Polka</button>
+							<button type="button" name="face" value="stone" class="btn btn-inverse" title="Click here to make a stone-cold face appear">Stone</button>
+							<button type="button" name="face" value="gold" class="btn btn-inverse" title="Click here to make a golden face appear">Gold</button>
 						</div>
-						<div>
+						<div class="offset">
 							<!--<h3>Face patterns</h3>-->
-							<button type="button" name="piece" value="1" class="btn btn-inverse">Piece #1</button>
-							<button type="button" name="piece" value="2" class="btn btn-inverse">Piece #2</button>
-							<button type="button" name="piece" value="3" class="btn btn-inverse">Piece #3</button>
-							<button type="button" name="piece" value="4" class="btn btn-inverse">Piece #4</button>
-							<button type="button" name="piece" value="5" class="btn btn-inverse">Piece #5</button>
-							<button type="button" name="piece" value="6" class="btn btn-inverse">Piece #6</button>
-							<button type="button" name="piece" value="7" class="btn btn-inverse">Piece #7</button>
-							<button type="button" name="piece" value="8" class="btn btn-inverse">Piece #8</button>
+							<button type="button" name="piece" value="1" class="btn btn-inverse" title="Click here to make part of Robbie's face show or hide">Piece #1</button>
+							<button type="button" name="piece" value="2" class="btn btn-inverse" title="Click here to make part of Robbie's face show or hide">Piece #2</button>
+							<button type="button" name="piece" value="3" class="btn btn-inverse" title="Click here to make part of Robbie's face show or hide">Piece #3</button>
+							<button type="button" name="piece" value="4" class="btn btn-inverse" title="Click here to make part of Robbie's face show or hide">Piece #4</button>
+							<button type="button" name="piece" value="5" class="btn btn-inverse" title="Click here to make part of Robbie's face show or hide">Piece #5</button>
+							<button type="button" name="piece" value="6" class="btn btn-inverse" title="Click here to make part of Robbie's face show or hide">Piece #6</button>
+							<button type="button" name="piece" value="7" class="btn btn-inverse" title="Click here to make part of Robbie's face show or hide">Piece #7</button>
+							<button type="button" name="piece" value="8" class="btn btn-inverse" title="Click here to make part of Robbie's face show or hide">Piece #8</button>
 						</div>
 					</section>
 					
@@ -53,23 +53,6 @@
 							<div class="slider"><span>Horizontal:</span> <input type="range" name="offset_x" value="0" min="-1" max="1" step="0.01"></div>
 							<div class="slider"><span>Vertical:</span> <input type="range" name="offset_y" value="0" min="-1" max="1" step="0.01"></div>
 						</div>
-						
-						<table>
-							<tbody>
-								<tr>
-									<th>Scale:</th>
-									<td id="scale_output"></td>
-								</tr>
-								<tr>
-									<th>Offset X:</th>
-									<td id="offset_x_output"></td>
-								</tr>
-								<tr>
-									<th>Offset Y:</th>
-									<td id="offset_y_output"></td>
-								</tr>
-							</tbody>
-						</table>
 						
 					</section>
 				
