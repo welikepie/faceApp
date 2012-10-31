@@ -1,5 +1,5 @@
 @charset 'utf-8';
-@import 'smoothness/jquery-ui-1.9.0.custom.min.css';
+@import 'blitzer/jquery-ui-1.9.1.custom.min.css';
 @import 'buttons';
 
 @base: 16px;
@@ -8,8 +8,14 @@ html, body {
 	margin: 0; padding: 0;
 	width: 300px; height: 100%;
 	overflow: hidden;
+    background: #e1b3b6;
 }
-h1, h2, h3, p { margin: 0 0 @base; padding: 0; }
+h1, h2, h3, p {
+    margin: (@base * 0.25) 0 (@base * 0.25); padding: 0;
+    color: #c03856;
+    font-family: HelveticaNeue, Helvetica, Arial, sans-serif;
+    font-size: 13px;
+}
 
 div.wrapper {
 	width: 300px;
@@ -37,6 +43,7 @@ header {
 	margin: 0 auto (@base * 0.5);
 	padding: 0;
 	border: none !important;
+    background: #e1b3b6 !important;
 	
 	ul li { font-size: @base * 0.75; }
 	
@@ -62,20 +69,20 @@ header {
             
             [name="sound"] {
                 float: none;
+                position: relative;
                 width: 100%;
+                font-weight: bold;
                 text-align: center;
                 text-indent: 0;
                 
-                &.loading {
-                    position: relative;
-                    &:after {
-                        content: '';
-                        width: 16px; height: 100%;
-                        position: absolute;
-                        top: 0; right: 4px;
-                        background: url('../images/ajax-loader.gif') no-repeat center center;
-                    }
+                &:after {
+                    content: '';
+                    width: 16px; height: 100%;
+                    position: absolute;
+                    top: 0; left: 16px;
+                    background: url('../images/play.png') no-repeat center center;
                 }
+                &.loading:after { background-image: url('../images/ajax-loader.gif'); }
             }
 			[name="face"] {
 				width: 84px;
@@ -108,7 +115,12 @@ header {
                 display: block;
                 overflow: hidden;
 				+ .slider { margin-top: 4px; }
-                span { float: left; overflow: hidden; width: 70px; }
+                span {
+                    float: left;
+                    overflow: hidden;
+                    width: 70px;
+                    color: #c03856;
+                }
             }
             input[type="range"], div.range {
                 display: block;
